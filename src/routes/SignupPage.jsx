@@ -35,7 +35,7 @@ export default function SignupPage() {
         promise.then(res => navigate('/'))
         promise.catch(err => {
             setLoading(false)
-            if (err.response.status == 409) return alert("This email is already registered")
+            if (err.response.status === 409) return alert("This email is already registered")
             console.log(err.response)
         })
 
