@@ -1,21 +1,21 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import GlobalContextProvider from './contexts/GlobalContext';
-import SigninPage from './routes/SigninPage';
-import SignupPage from './routes/SignupPage';
-import TimeLine from './routes/TimeLine';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AuthProvider from "./contexts/AuthContext";
+import SigninPage from "./routes/SigninPage";
+import SignupPage from "./routes/SignupPage";
+import TimeLine from "./routes/TimeLine";
 
 function App() {
 
   return (
-    <GlobalContextProvider>
+    <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<SigninPage />} />
-          <Route path='/sign-up' element={<SignupPage />} />
-          <Route path='/timeline' element={<TimeLine />} />
+          <Route path="/" element={<SigninPage />} />
+          <Route path="/sign-up" element={<SignupPage />} />
+          <Route path="/timeline" element={<TimeLine />} />
         </Routes>
       </BrowserRouter>
-    </GlobalContextProvider>
+    </AuthProvider>
   );
 }
 

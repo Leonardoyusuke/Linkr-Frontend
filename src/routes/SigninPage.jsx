@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { FallingLines } from "react-loader-spinner"
-import { GlobalContext } from "../contexts/GlobalContext"
+import { AuthContext } from "../contexts/AuthContext"
 
 export default function SigninPage() {
     const [email, setEmail] = useState('')
@@ -11,7 +11,7 @@ export default function SigninPage() {
 
     const [loading, setLoading] = useState(false)
 
-    const { setUserImgUrl } = useContext(GlobalContext)
+    const { setInfosUser } = useContext(AuthContext);
 
     const navigate = useNavigate()
 
@@ -34,8 +34,8 @@ export default function SigninPage() {
         promise.then(res => {
             localStorage.setItem("userToken", res.data.token)
 
+            setInfosUser(res.data);
             if (res.data.imgUrl) {
-                setUserImgUrl(res.data.imgUrl)
                 localStorage.setItem("userImgUrl", res.data.imgUrl)
             }
 
