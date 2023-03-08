@@ -18,7 +18,7 @@ export default function TimeLine() {
       return navigate("/");
     }
     const res = axios.get(`${REACT_APP_API_URL}/posts`, {
-      headers: { Authorization: `Bearer ${infosUser}` },
+      headers: { Authorization: `Bearer ${infosUser.token}` },
     });
     res.then((res) => {
       setPost(res.data);
