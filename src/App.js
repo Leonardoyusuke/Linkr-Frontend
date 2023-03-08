@@ -5,7 +5,6 @@ import SignupPage from "./routes/SignupPage";
 import TimeLine from "./routes/TimeLine";
 
 function App() {
-
   return (
     <AuthProvider>
       <BrowserRouter>
