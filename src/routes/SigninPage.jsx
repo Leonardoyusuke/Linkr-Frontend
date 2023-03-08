@@ -13,7 +13,10 @@ export default function SigninPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (localStorage.getItem("userToken")) navigate('/timeline')
+        if (localStorage.getItem("userToken")) {
+            setInfosUser({ token: localStorage.getItem("userToken"), imgUrl: localStorage.getItem("userImgUrl") });
+            navigate('/timeline')
+        }
     }, [])
 
     function handleLogin(e) {
