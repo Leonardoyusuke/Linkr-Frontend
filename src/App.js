@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import GlobalContextProvider from './contexts/GlobalContext';
 import SigninPage from './routes/SigninPage';
 import SignupPage from './routes/SignupPage';
 import TimeLine from './routes/TimeLine';
@@ -6,15 +7,15 @@ import TimeLine from './routes/TimeLine';
 function App() {
 
   return (
-
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<SigninPage />} />
-        <Route path='/sign-up' element={<SignupPage />} />
-        <Route path='/timeline' element={<TimeLine />} />
-      </Routes>
-    </BrowserRouter>
-
+    <GlobalContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<SigninPage />} />
+          <Route path='/sign-up' element={<SignupPage />} />
+          <Route path='/timeline' element={<TimeLine />} />
+        </Routes>
+      </BrowserRouter>
+    </GlobalContextProvider>
   );
 }
 

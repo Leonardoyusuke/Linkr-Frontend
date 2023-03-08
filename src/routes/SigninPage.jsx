@@ -1,14 +1,23 @@
 import axios from "axios"
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useContext, useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { FallingLines } from "react-loader-spinner"
+import { GlobalContext } from "../contexts/GlobalContext"
 
 export default function SigninPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const [loading, setLoading] = useState(false)
+
+    const { setUserImgUrl } = useContext(GlobalContext)
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (localStorage.getItem("userToken")) navigate('/timeline')
+    }, [])
 
     function handleLogin(e) {
         e.preventDefault()
@@ -23,7 +32,14 @@ export default function SigninPage() {
 
         const promise = axios.post(process.env.REACT_APP_API_URL + '/signin', body)
         promise.then(res => {
-            console.log(res.data)
+            localStorage.setItem("userToken", res.data.token)
+
+            if (res.data.imgUrl) {
+                setUserImgUrl(res.data.imgUrl)
+                localStorage.setItem("userImgUrl", res.data.imgUrl)
+            }
+
+            navigate("/timeline")
             setLoading(false)
         })
         promise.catch(err => {
