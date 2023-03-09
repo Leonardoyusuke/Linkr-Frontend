@@ -1,42 +1,42 @@
 import styled from "styled-components"
 import { useState } from "react"
 import { AiOutlineSearch } from 'react-icons/ai';
-import {DebounceInput} from 'react-debounce-input';
+// import {DebounceInput} from 'react-debounce-input';
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
-export default function SearchBar(){
+export default function SearchBar() {
     const navigate = useNavigate()
     const [search, setSearch] = useState("")
-    const [searchResult,setSearchResult] = useState([])
-    const [toggleResult,setToggleResult] = useState(false)
-    
+    const [searchResult, setSearchResult] = useState([])
+    const [toggleResult, setToggleResult] = useState(false)
+
     async function fetchData() {
         try {
-          const req = await axios.post(process.env.REACT_APP_API_URL + '/search', {username:search})
-          setSearchResult(req.data)
-          console.log(searchResult)
+            const req = await axios.post(process.env.REACT_APP_API_URL + '/search', { username: search })
+            setSearchResult(req.data)
+            console.log(searchResult)
         } catch (error) {
-          console.log(error)
+            console.log(error)
         }
-      }
-      
-      useEffect(()=>{
-        if(search.length>2){
-          fetchData();
+    }
+
+    useEffect(() => {
+        if (search.length > 2) {
+            fetchData();
         }
-        else{
+        else {
             setSearchResult([])
         }
-      }, [search]);
+    }, [search]);
 
-    function searchUser(e){
+    function searchUser(e) {
         setSearch(e.target.value)
         console.log(search)
     }
-    function goUserPage(id){
+    function goUserPage(id) {
         setSearchResult([])
         navigate(`/user/${id}`)
     }
@@ -44,22 +44,22 @@ export default function SearchBar(){
     return (
         <SearchBarContainer  >
             <FixSearch>
-             <SearchInput
-                minLength={3}
-                debounceTimeout={300}
-                onChange={searchUser}
-                placeholder="Search for people" />
-             <SearchIcon  />
-             </FixSearch>
-             <SearchBarResult>
-                {(!searchResult? (<></>):
-                (searchResult.map((r)=><ResultBox>
-                    <Img onClick={() => {goUserPage(r.id)}} src={r.pictureUrl}/> 
-                    <Username onClick={() => {goUserPage(r.id)}} >{r.username}</Username>
-                </ResultBox>
-                )))}
-             </SearchBarResult>
-            </SearchBarContainer>
+                <SearchInput
+                    minLength={3}
+                    debounceTimeout={300}
+                    onChange={searchUser}
+                    placeholder="Search for people" />
+                <SearchIcon />
+            </FixSearch>
+            <SearchBarResult>
+                {(!searchResult ? (<></>) :
+                    (searchResult.map((r) => <ResultBox>
+                        <Img onClick={() => { goUserPage(r.id) }} src={r.pictureUrl} />
+                        <Username onClick={() => { goUserPage(r.id) }} >{r.username}</Username>
+                    </ResultBox>
+                    )))}
+            </SearchBarResult>
+        </SearchBarContainer>
     )
 }
 
@@ -91,7 +91,7 @@ const SearchIcon = styled(AiOutlineSearch)`
     color: #888;
     margin-right: 10px;
     z-index:3; `
-    
+
 const SearchBarResult = styled.div`
     width: 568px;
     width: calc(43vw);
