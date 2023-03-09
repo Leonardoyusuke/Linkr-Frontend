@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { AiOutlineDown } from "react-icons/ai"
 import { IconContext } from "react-icons"
 import { useState } from "react"
-import SearchBar from "./SearchBar"
+import SearchBar from "./SearchBar.js"
 import { useNavigate } from "react-router";
 
 
