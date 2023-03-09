@@ -11,7 +11,6 @@ export default function SearchBar(){
     const navigate = useNavigate()
     const [search, setSearch] = useState("")
     const [searchResult,setSearchResult] = useState([])
-    const [toggleResult,setToggleResult] = useState(false)
     
     async function fetchData() {
         try {
