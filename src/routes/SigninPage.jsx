@@ -37,8 +37,8 @@ export default function SigninPage() {
             localStorage.setItem("userToken", res.data.token)
 
             setInfosUser(res.data);
-            if (res.data.imgUrl) {
-                localStorage.setItem("userImgUrl", res.data.imgUrl)
+            if (res.data.userImgUrl) {
+                localStorage.setItem("userImgUrl", res.data.userImgUrl)
             }
 
             navigate("/timeline")
