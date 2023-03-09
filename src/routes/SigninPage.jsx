@@ -1,29 +1,47 @@
 import axios from "axios"
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useContext, useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { FallingLines } from "react-loader-spinner"
+import { AuthContext } from "../contexts/AuthContext"
 
 export default function SigninPage() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { setInfosUser } = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(false)
+    useEffect(() => {
+        if (localStorage.getItem("userToken")) {
+            setInfosUser({ token: localStorage.getItem("userToken"), imgUrl: localStorage.getItem("userImgUrl") });
+            navigate('/timeline')
+        }
+    }, [])
 
     function handleLogin(e) {
-        e.preventDefault()
-        setLoading(true)
+        e.preventDefault();
+        setLoading(true);
 
-        if (email === '' || password === '') return alert('Please fill in all fields')
+        if (email === "" || password === "")
+            return alert("Please fill in all fields");
+
 
         const body = {
             email: email,
-            password: password
-        }
+            password: password,
+        };
 
         const promise = axios.post(process.env.REACT_APP_API_URL + '/signin', body)
         promise.then(res => {
-            console.log(res.data)
+            localStorage.setItem("userToken", res.data.token)
+
+            setInfosUser(res.data);
+            if (res.data.imgUrl) {
+                localStorage.setItem("userImgUrl", res.data.imgUrl)
+            }
+
+            navigate("/timeline")
             setLoading(false)
         })
         promise.catch(err => {
@@ -39,116 +57,122 @@ export default function SigninPage() {
                 <p>save, share and discover the best links on the web</p>
             </LogoContainer>
             <LoginContainer>
-                <form onSubmit={e => handleLogin(e)}>
-                    <input type="email" placeholder="e-mail" value={email} onChange={e => setEmail(e.target.value)}></input>
-                    <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)}></input>
+                <form onSubmit={(e) => handleLogin(e)}>
+                    <input
+                        type="email"
+                        placeholder="e-mail"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}></input>
+                    <input
+                        type="password"
+                        placeholder="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}></input>
 
                     <button type="submit" disabled={loading}>
-                        {(loading) ?
+                        {loading ? (
                             <FallingLines
                                 color="#ffff"
                                 width="60"
                                 visible={true}
-                                ariaLabel='falling-lines-loading'
-                            /> :
+                                ariaLabel="falling-lines-loading"
+                            />
+                        ) : (
                             "Log In"
-                        }
+                        )}
                     </button>
-                </form>
-                <Link to='/sign-up'>
-                    First time? Create an account!
-                </Link>
-            </LoginContainer>
-        </Container>
-    )
+                </form >
+                <Link to="/sign-up">First time? Create an account!</Link>
+            </LoginContainer >
+        </Container >
+    );
 }
 
 const Container = styled.div`
-    display: flex;
-    height: 100vh;
-    width: 100vw;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
 
-    justify-content: space-between;
+  justify-content: space-between;
 
-    background-color: #151515;
-    color: #ffff;
+  background-color: #151515;
+  color: #ffff;
 
-    font-family: 'Passion One', cursive;
-`
+  font-family: "Passion One", cursive;
+`;
 const LogoContainer = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    justify-content: center;
-    width: 450px;
+  justify-content: center;
+  width: 450px;
 
-    margin-left: 10%;
+  margin-left: 10%;
 
-    > h1{
-        font-size: 106px;
-    }
-    >p{
-        font-size: 43px;
-        font-weight: 700;
-        font-family: 'Oswald', sans-serif;
-    }
-`
+  > h1 {
+    font-size: 106px;
+  }
+  > p {
+    font-size: 43px;
+    font-weight: 700;
+    font-family: "Oswald", sans-serif;
+  }
+`;
 const LoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 40%;
+
+  justify-content: center;
+  align-items: center;
+
+  > form {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    width: 40%;
+    width: 80%;
 
-    justify-content: center;
-    align-items: center;
+    > input {
+      width: 100%;
+      height: 65px;
+      margin-bottom: 15px;
 
-    >form{
-        display: flex;
-        flex-direction: column;
-        width: 80%;
+      font-family: "Oswald", sans-serif;
+      font-size: 27px;
+      font-weight: 700;
+      color: #9f9f9f;
 
-        >input{
-            width: 100%;
-            height: 65px;
-            margin-bottom: 15px;
+      padding: 0 15px;
 
-            font-family: 'Oswald', sans-serif;
-            font-size: 27px;
-            font-weight: 700;
-            color: #9F9F9F;
-            
-            padding: 0 15px;
-
-            border: none;
-            border-radius: 6px;
-        }
-
-        >button{
-            font-family: 'Oswald', sans-serif;
-            font-size: 27px;
-            font-weight: 700;
-            color: #ffff;
-
-            width: 100%;
-            height: 65px;
-
-            border: none;
-            border-radius: 6px;
-
-            cursor: pointer;
-            background-color: #1877F2;
-        }
-
+      border: none;
+      border-radius: 6px;
     }
 
-    >a{
-        font-family: 'Lato', sans-serif;
-        font-size: 20px;
-        color: #ffff;
-        margin-top: 20px;
-        text-decoration: none ;
+    > button {
+      font-family: "Oswald", sans-serif;
+      font-size: 27px;
+      font-weight: 700;
+      color: #ffff;
 
-        border-bottom: 1px #ffff solid;
+      width: 100%;
+      height: 65px;
+
+      border: none;
+      border-radius: 6px;
+
+      cursor: pointer;
+      background-color: #1877f2;
     }
-    background-color: #333333;
-`
+  }
+
+  > a {
+    font-family: "Lato", sans-serif;
+    font-size: 20px;
+    color: #ffff;
+    margin-top: 20px;
+    text-decoration: none;
+
+    border-bottom: 1px #ffff solid;
+  }
+  background-color: #333333;
+`;

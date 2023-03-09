@@ -3,14 +3,24 @@ import { AiOutlineDown } from "react-icons/ai"
 import { IconContext } from "react-icons"
 import { useState } from "react"
 import SearchBar from "./SearchBar"
+import { useNavigate } from "react-router";
 
 
 export default function NavBar(imgUrl) {
     const [menu, setMenu] = useState(false)
+
+    const navigate = useNavigate()
+
     function toggleMenu() {
         setMenu(!menu)
     }
-    
+
+    function logout() {
+        if (localStorage.getItem("userToken")) localStorage.removeItem("userToken")
+        if (localStorage.getItem("userImgUrl")) localStorage.removeItem("userImgUrl")
+        navigate("/")
+    }
+
 
     return (
         <Container>
@@ -26,11 +36,13 @@ export default function NavBar(imgUrl) {
                         <AiOutlineDown />
                     </IconContext.Provider>
                 </div>
-                <UserImg src={imgUrl} alt='' />
+                <UserImg href={imgUrl} alt='' />
             </Menu>
-            <Options menu={menu}>
-                <p>Logout</p>
-            </Options>
+            <MenuBackground menu={menu} onClick={toggleMenu}>
+                <Options onClick={logout} menu={menu}>
+                    <p>Logout</p>
+                </Options>
+            </MenuBackground>
         </Container>
     )
 }
@@ -39,6 +51,7 @@ const Container = styled.div`
     display: flex;
     height: 70px;
     width: 100%;
+    position: relative;
 
     align-items: center;
     justify-content: space-between;
@@ -52,6 +65,20 @@ const Logo = styled.div`
     color: #ffff;
     font-size: 49px;
 `
+const MenuBackground = styled.div`
+    /* background-color: rgba(0, 0, 0, 0.5); */
+
+    z-index: ${props => (props.menu) ? 1 : -1};
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+`
+
 const Menu = styled.div`
     cursor: pointer;
 
@@ -60,6 +87,8 @@ const Menu = styled.div`
     justify-content: space-between;
 
     width: 90px;
+
+    z-index: ${props => (props.menu) ? 2 : 1};
     
     >div{
         display: flex;
@@ -82,7 +111,7 @@ const Options = styled.div`
     display: flex;
     cursor: pointer;
 
-    position: fixed;
+    position: absolute;
     z-index: ${props => (props.menu) ? 1 : -1};
     right: 0;
     top: ${props => (props.menu) ? "70px" : 0};
