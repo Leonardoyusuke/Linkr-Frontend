@@ -76,91 +76,138 @@ export default function SignupPage() {
 }
 
 const Container = styled.div`
-    display: flex;
-    height: 100vh;
-    width: 100vw;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
 
-    justify-content: space-between;
+  justify-content: space-between;
 
-    background-color: #151515;
-    color: #ffff;
+  background-color: #151515;
+  color: #ffff;
 
-    font-family: 'Passion One', cursive;
-`
-const LogoContainer = styled.div`
-    display: flex;
+  font-family: "Passion One", cursive;
+
+  @media (max-width: 900px) {
     flex-direction: column;
-
-    justify-content: center;
-    width: 450px;
-
-    margin-left: 10%;
-
-    > h1{
-        font-size: 106px;
-    }
-    >p{
-        font-size: 43px;
-        font-weight: 700;
-        font-family: 'Oswald', sans-serif;
-    }
-`
-const SigninContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 40%;
-
-    justify-content: center;
     align-items: center;
+  }
 
-    >form{
-        display: flex;
-        flex-direction: column;
-        width: 80%;
+`;
+const LogoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 
-        >input{
-            width: 100%;
-            height: 65px;
-            margin-bottom: 15px;
+  justify-content: center;
+  width: 450px;
 
-            font-family: 'Oswald', sans-serif;
-            font-size: 27px;
-            font-weight: 700;
-            color: #9F9F9F;
-            
-            padding: 0 15px;
+  margin-left: 10%;
 
-            border: none;
-            border-radius: 6px;
-        }
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
 
-        >button{
-            font-family: 'Oswald', sans-serif;
-            font-size: 27px;
-            font-weight: 700;
-            color: #ffff;
+    height: 30%;
+    width: 100%;
+  }
 
-            width: 100%;
-            height: 65px;
+  > h1 {
+    font-size: 106px;
+    @media (max-width: 900px) {
+        font-size: 76px;
+    }
+  }
+  > p {
+    font-size: 43px;
+    font-weight: 700;
+    font-family: "Oswald", sans-serif;
 
-            border: none;
-            border-radius: 6px;
+    @media (max-width: 900px) {
+        font-size: 23px;
+        width: 65%;
 
-            cursor: pointer;
-            background-color: #1877F2;
-        }
+        text-align: center;
+    }
+  }
+`;
+const SigninContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 40%;
 
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    height: 70%;
+
+    justify-content: flex-start;
+  }
+
+  > form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+
+    @media (max-width: 900px) {
+        width: 90%;
+
+        margin-top: 30px;
     }
 
-    >a{
-        font-family: 'Lato', sans-serif;
-        font-size: 20px;
-        color: #ffff;
-        margin-top: 20px;
-        text-decoration: none ;
+    > input {
+      width: 100%;
+      height: 65px;
+      margin-bottom: 15px;
 
-        border-bottom: 1px #ffff solid;
+      font-family: "Oswald", sans-serif;
+      font-size: 27px;
+      font-weight: 700;
+      color: #9f9f9f;
+
+      padding: 0 15px;
+
+      border: none;
+      border-radius: 6px;
+
+        @media (max-width: 900px) {
+            height: 55px;
+            font-size: 22px;
+        }
     }
-    background-color: #333333;
-`
+
+    > button {
+      font-family: "Oswald", sans-serif;
+      font-size: 27px;
+      font-weight: 700;
+      color: #ffff;
+
+      width: 100%;
+      height: 65px;
+
+      border: none;
+      border-radius: 6px;
+
+      cursor: pointer;
+      background-color: #1877f2;
+
+      @media (max-width: 900px) {
+            height: 55px;
+            font-size: 22px;
+        }
+    }
+  }
+
+  > a {
+    font-family: "Lato", sans-serif;
+    font-size: 20px;
+    color: #ffff;
+    margin-top: 20px;
+    text-decoration: none;
+
+    border-bottom: 1px #ffff solid;
+  }
+  background-color: #333333;
+`;
