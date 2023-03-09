@@ -25,7 +25,7 @@ export default function AddPost({ pictureUrl, setFormSubmitted }) {
             }
           : { url };
       await axios.post(`${REACT_APP_API_URL}/posts`, payload, {
-        headers: { Authorization: `Bearer ${infosUser}` },
+        headers: { Authorization: `Bearer ${infosUser.token}` },
       });
       setButtonDisabled(false);
       setFormSubmitted(false);
