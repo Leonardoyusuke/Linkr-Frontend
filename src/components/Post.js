@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 // import urlMetadata from "url-metadata";
+;
 
 export default function Post({ username, pictureUrl, description, url }) {
   // async function getMetadata(url) {
