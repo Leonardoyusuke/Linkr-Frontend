@@ -99,6 +99,12 @@ const Container = styled.div`
   color: #ffff;
 
   font-family: "Passion One", cursive;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+  }
+
 `;
 const LogoContainer = styled.div`
   display: flex;
@@ -109,13 +115,32 @@ const LogoContainer = styled.div`
 
   margin-left: 10%;
 
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+
+    height: 30%;
+    width: 100%;
+  }
+
   > h1 {
     font-size: 106px;
+    @media (max-width: 900px) {
+        font-size: 76px;
+    }
   }
   > p {
     font-size: 43px;
     font-weight: 700;
     font-family: "Oswald", sans-serif;
+
+    @media (max-width: 900px) {
+        font-size: 23px;
+        width: 65%;
+
+        text-align: center;
+    }
   }
 `;
 const LoginContainer = styled.div`
@@ -127,10 +152,23 @@ const LoginContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  @media (max-width: 900px) {
+    width: 100%;
+    height: 70%;
+
+    justify-content: flex-start;
+  }
+
   > form {
     display: flex;
     flex-direction: column;
     width: 80%;
+
+    @media (max-width: 900px) {
+        width: 90%;
+
+        margin-top: 30px;
+    }
 
     > input {
       width: 100%;
@@ -146,6 +184,11 @@ const LoginContainer = styled.div`
 
       border: none;
       border-radius: 6px;
+
+        @media (max-width: 900px) {
+            height: 55px;
+            font-size: 22px;
+        }
     }
 
     > button {
@@ -162,6 +205,11 @@ const LoginContainer = styled.div`
 
       cursor: pointer;
       background-color: #1877f2;
+
+      @media (max-width: 900px) {
+            height: 55px;
+            font-size: 22px;
+        }
     }
   }
 
