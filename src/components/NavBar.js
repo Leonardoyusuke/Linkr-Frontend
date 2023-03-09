@@ -3,13 +3,22 @@ import { AiOutlineDown } from "react-icons/ai"
 import { IconContext } from "react-icons"
 import { useState } from "react"
 import { AiOutlineSearch } from 'react-icons/ai';
+import { useNavigate } from "react-router";
 
 
 export default function NavBar(imgUrl) {
     const [menu, setMenu] = useState(false)
 
+    const navigate = useNavigate()
+
     function toggleMenu() {
         setMenu(!menu)
+    }
+
+    function logout() {
+        if (localStorage.getItem("userToken")) localStorage.removeItem("userToken")
+        if (localStorage.getItem("userImgUrl")) localStorage.removeItem("userImgUrl")
+        navigate("/")
     }
 
 
@@ -18,10 +27,10 @@ export default function NavBar(imgUrl) {
             <Logo>
                 linkr
             </Logo>
-            
+
             <SearchBarContainer>
-             <SearchInput placeholder="Search for people" />
-             <SearchIcon />
+                <SearchInput placeholder="Search for people" />
+                <SearchIcon />
             </SearchBarContainer>
 
             <Menu menu={menu} onClick={toggleMenu}>
@@ -32,9 +41,11 @@ export default function NavBar(imgUrl) {
                 </div>
                 <UserImg src={imgUrl} alt='' />
             </Menu>
-            <Options menu={menu}>
-                <p>Logout</p>
-            </Options>
+            <MenuBackground menu={menu} onClick={toggleMenu}>
+                <Options onClick={logout} menu={menu}>
+                    <p>Logout</p>
+                </Options>
+            </MenuBackground>
         </Container>
     )
 }
@@ -56,6 +67,20 @@ const Logo = styled.div`
     color: #ffff;
     font-size: 49px;
 `
+const MenuBackground = styled.div`
+    /* background-color: rgba(0, 0, 0, 0.5); */
+
+    z-index: ${props => (props.menu) ? 1 : -1};
+
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+`
+
 const Menu = styled.div`
     cursor: pointer;
 
@@ -64,6 +89,8 @@ const Menu = styled.div`
     justify-content: space-between;
 
     width: 90px;
+
+    z-index: ${props => (props.menu) ? 2 : 1};
     
     >div{
         display: flex;

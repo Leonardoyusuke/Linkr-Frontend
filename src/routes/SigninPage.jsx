@@ -1,78 +1,91 @@
-import axios from "axios";
-import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { FallingLines } from "react-loader-spinner";
-import { AuthContext } from "../contexts/AuthContext";
+import axios from "axios"
+import { useContext, useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import styled from "styled-components"
+import { FallingLines } from "react-loader-spinner"
+import { AuthContext } from "../contexts/AuthContext"
 
 export default function SigninPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { setInfosUser } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { setInfosUser } = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-  function handleLogin(e) {
-    e.preventDefault();
-    setLoading(true);
+    useEffect(() => {
+        if (localStorage.getItem("userToken")) {
+            setInfosUser({ token: localStorage.getItem("userToken"), imgUrl: localStorage.getItem("userImgUrl") });
+            navigate('/timeline')
+        }
+    }, [])
 
-    if (email === "" || password === "")
-      return alert("Please fill in all fields");
+    function handleLogin(e) {
+        e.preventDefault();
+        setLoading(true);
 
-    const body = {
-      email: email,
-      password: password,
-    };
+        if (email === "" || password === "")
+            return alert("Please fill in all fields");
 
-    const promise = axios.post(process.env.REACT_APP_API_URL + "/signin", body);
-    promise.then((res) => {
-      setInfosUser(res.data.token);
-      navigate("/timeline");
-      setLoading(false);
-    });
-    promise.catch((err) => {
-      setLoading(false);
-      if (err.response.status === 401)
-        return alert("E-mail or password invalid!");
-    });
-  }
 
-  return (
-    <Container>
-      <LogoContainer>
-        <h1>linkr</h1>
-        <p>save, share and discover the best links on the web</p>
-      </LogoContainer>
-      <LoginContainer>
-        <form onSubmit={(e) => handleLogin(e)}>
-          <input
-            type="email"
-            placeholder="e-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}></input>
-          <input
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}></input>
+        const body = {
+            email: email,
+            password: password,
+        };
 
-          <button type="submit" disabled={loading}>
-            {loading ? (
-              <FallingLines
-                color="#ffff"
-                width="60"
-                visible={true}
-                ariaLabel="falling-lines-loading"
-              />
-            ) : (
-              "Log In"
-            )}
-          </button>
-        </form>
-        <Link to="/sign-up">First time? Create an account!</Link>
-      </LoginContainer>
-    </Container>
-  );
+        const promise = axios.post(process.env.REACT_APP_API_URL + '/signin', body)
+        promise.then(res => {
+            localStorage.setItem("userToken", res.data.token)
+
+            setInfosUser(res.data);
+            if (res.data.imgUrl) {
+                localStorage.setItem("userImgUrl", res.data.imgUrl)
+            }
+
+            navigate("/timeline")
+            setLoading(false)
+        })
+        promise.catch(err => {
+            setLoading(false)
+            if (err.response.status === 401) return alert("E-mail or password invalid!")
+        })
+    }
+
+    return (
+        <Container>
+            <LogoContainer>
+                <h1>linkr</h1>
+                <p>save, share and discover the best links on the web</p>
+            </LogoContainer>
+            <LoginContainer>
+                <form onSubmit={(e) => handleLogin(e)}>
+                    <input
+                        type="email"
+                        placeholder="e-mail"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}></input>
+                    <input
+                        type="password"
+                        placeholder="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}></input>
+
+                    <button type="submit" disabled={loading}>
+                        {loading ? (
+                            <FallingLines
+                                color="#ffff"
+                                width="60"
+                                visible={true}
+                                ariaLabel="falling-lines-loading"
+                            />
+                        ) : (
+                            "Log In"
+                        )}
+                    </button>
+                </form >
+                <Link to="/sign-up">First time? Create an account!</Link>
+            </LoginContainer >
+        </Container >
+    );
 }
 
 const Container = styled.div`
