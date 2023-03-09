@@ -8,7 +8,7 @@ export default function SignupPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
-    const [picture_url, setPictureUrl] = useState('')
+    const [pictureUrl, setPictureUrl] = useState('')
 
     const [loading, setLoading] = useState(false)
 
@@ -18,7 +18,7 @@ export default function SignupPage() {
         e.preventDefault()
         setLoading(true)
 
-        if (email === '' || password === '' || username === '' || picture_url === '') {
+        if (email === '' || password === '' || username === '' || pictureUrl === '') {
             alert('Please fill in all fields')
             setLoading(false)
             return
@@ -28,7 +28,7 @@ export default function SignupPage() {
             email: email,
             password: password,
             username: username,
-            picture_url: picture_url
+            pictureUrl: pictureUrl
         }
 
         const promise = axios.post(process.env.REACT_APP_API_URL + '/signup', body)
@@ -53,7 +53,7 @@ export default function SignupPage() {
                     <input type="email" placeholder="e-mail" value={email} onChange={e => setEmail(e.target.value)}></input>
                     <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)}></input>
                     <input type="text" placeholder="username" value={username} onChange={e => setUsername(e.target.value)}></input>
-                    <input type="text" placeholder="picture url" value={picture_url} onChange={e => setPictureUrl(e.target.value)}></input>
+                    <input type="text" placeholder="picture url" value={pictureUrl} onChange={e => setPictureUrl(e.target.value)}></input>
 
                     <button type="submit" disabled={loading}>
                         {(loading) ?

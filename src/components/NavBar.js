@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { AiOutlineDown } from "react-icons/ai"
 import { IconContext } from "react-icons"
 import { useState } from "react"
-import { AiOutlineSearch } from 'react-icons/ai';
+import SearchBar from "./SearchBar"
 import { useNavigate } from "react-router";
 
 
@@ -27,11 +27,8 @@ export default function NavBar(imgUrl) {
             <Logo>
                 linkr
             </Logo>
-
-            <SearchBarContainer>
-                <SearchInput placeholder="Search for people" />
-                <SearchIcon />
-            </SearchBarContainer>
+            
+            <SearchBar/>
 
             <Menu menu={menu} onClick={toggleMenu}>
                 <div>
@@ -39,7 +36,7 @@ export default function NavBar(imgUrl) {
                         <AiOutlineDown />
                     </IconContext.Provider>
                 </div>
-                <UserImg src={imgUrl} alt='' />
+                <UserImg href={imgUrl} alt='' />
             </Menu>
             <MenuBackground menu={menu} onClick={toggleMenu}>
                 <Options onClick={logout} menu={menu}>
@@ -54,6 +51,7 @@ const Container = styled.div`
     display: flex;
     height: 70px;
     width: 100%;
+    position: relative;
 
     align-items: center;
     justify-content: space-between;
@@ -72,7 +70,7 @@ const MenuBackground = styled.div`
 
     z-index: ${props => (props.menu) ? 1 : -1};
 
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
 
@@ -113,7 +111,7 @@ const Options = styled.div`
     display: flex;
     cursor: pointer;
 
-    position: fixed;
+    position: absolute;
     z-index: ${props => (props.menu) ? 1 : -1};
     right: 0;
     top: ${props => (props.menu) ? "70px" : 0};
@@ -132,25 +130,3 @@ const Options = styled.div`
 
     background-color: #151515;
 `
-const SearchBarContainer = styled.div`
-    display: flex;
-    align-items: center;
-    width: 563px;
-    height: 45px;
-    left: 437px;
-    top: 13px;
-    background: #FFFFFF;
-    border-radius: 8px;
-`;
-
-const SearchInput = styled.input`
-    flex: 1;
-    border: none;
-    padding: 10px;
-`;
-
-const SearchIcon = styled(AiOutlineSearch)`
-    font-size: 21px;
-    color: #888;
-    margin-right: 10px;
-`;

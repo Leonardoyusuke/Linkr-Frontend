@@ -16,29 +16,29 @@ export default function TimeLine() {
   const navigate = useNavigate();
   const { REACT_APP_API_URL } = process.env;
   useEffect(() => {
-    if (!infosUser) {
-      return navigate("/");
-    }
-    const res = axios.get(`${REACT_APP_API_URL}/posts`, {
-      headers: { Authorization: `Bearer ${infosUser.token}` },
-    });
-    res.then((res) => {
-      setPost(res.data);
-      setLoading(true);
-    });
-    res.catch(() => {
-      alert(
-        "An error occured while trying to fetch the posts, please refresh the page"
-      );
-      setLoading(true);
-    });
-  }, [REACT_APP_API_URL, infosUser, navigate, formSubmitted]);
+   if (!infosUser) {
+     return navigate("/");
+   }
+   const res = axios.get(`${REACT_APP_API_URL}/posts`, {
+     headers: { Authorization: `Bearer ${infosUser.token}` },
+   });
+   res.then((res) => {
+     setPost(res.data);
+     setLoading(true);
+   });
+   res.catch(() => {
+     alert(
+       "An error occured while trying to fetch the posts, please refresh the page"
+     );
+     setLoading(true);
+   });
+  }, [REACT_APP_API_URL, infosUser, navigate]);
   if (!infosUser) {
-    return navigate("/");
+   return navigate("/");
   }
-  if (!loading) {
-    return <Loading />;
-  }
+ if (!loading) {
+   return <Loading />;
+ }
   return (
     <Container>
       <NavBar />

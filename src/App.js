@@ -12,6 +12,7 @@ function App() {
           <Route path="/" element={<SigninPage />} />
           <Route path="/sign-up" element={<SignupPage />} />
           <Route path="/timeline" element={<TimeLine />} />
+         {/* </Routes> <Route path="/user/:id" element={</>}/> */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>
