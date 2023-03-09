@@ -2,16 +2,15 @@ import styled from "styled-components"
 import { AiOutlineDown } from "react-icons/ai"
 import { IconContext } from "react-icons"
 import { useState } from "react"
-import { AiOutlineSearch } from 'react-icons/ai';
+import SearchBar from "./SearchBar"
 
 
 export default function NavBar(imgUrl) {
     const [menu, setMenu] = useState(false)
-
     function toggleMenu() {
         setMenu(!menu)
     }
-
+    
 
     return (
         <Container>
@@ -19,10 +18,7 @@ export default function NavBar(imgUrl) {
                 linkr
             </Logo>
             
-            <SearchBarContainer>
-             <SearchInput placeholder="Search for people" />
-             <SearchIcon />
-            </SearchBarContainer>
+            <SearchBar/>
 
             <Menu menu={menu} onClick={toggleMenu}>
                 <div>
@@ -105,25 +101,3 @@ const Options = styled.div`
 
     background-color: #151515;
 `
-const SearchBarContainer = styled.div`
-    display: flex;
-    align-items: center;
-    width: 563px;
-    height: 45px;
-    left: 437px;
-    top: 13px;
-    background: #FFFFFF;
-    border-radius: 8px;
-`;
-
-const SearchInput = styled.input`
-    flex: 1;
-    border: none;
-    padding: 10px;
-`;
-
-const SearchIcon = styled(AiOutlineSearch)`
-    font-size: 21px;
-    color: #888;
-    margin-right: 10px;
-`;
