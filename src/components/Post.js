@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { Tooltip } from "react-tooltip";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
@@ -28,7 +29,6 @@ export default function Post({ body, liked }) {
       setClickLike((current) => !current);
       setButtonDisabled(false);
     }
-
     return;
   }
   return (
@@ -40,11 +40,17 @@ export default function Post({ body, liked }) {
           onClick={() => {
             like(body.id);
           }}
-          disabled={buttonDisabled}
-        >
+          disabled={buttonDisabled}>
           {clickLike ? <AiOutlineHeart /> : <AiFillHeart />}
         </ContainerLike>
-        <div>{body.likes} likes</div>
+        <div>
+          <div data-tip="Tooltip content" data-for="my-button">
+            {body.likes} likes
+          </div>
+          <Tooltip id="my-button" effect="solid">
+            This is the tooltip content
+          </Tooltip>
+        </div>
       </div>
       <div>
         <h1>{body.username}</h1>

@@ -20,9 +20,9 @@ export default function AddPost({ pictureUrl, setFormSubmitted }) {
       const payload =
         description !== ""
           ? {
-            url,
-            description,
-          }
+              url,
+              description,
+            }
           : { url };
       await axios.post(`${REACT_APP_API_URL}/posts`, payload, {
         headers: { Authorization: `Bearer ${infosUser.token}` },
@@ -34,7 +34,9 @@ export default function AddPost({ pictureUrl, setFormSubmitted }) {
       setButtonValue("Publish");
     } catch (res) {
       console.log(res.response.status);
-      alert("There was an error publishing your link");
+      alert(
+        "An error occured while trying to fetch the posts, please refresh the page"
+      );
       setButtonDisabled(false);
       setFormSubmitted(false);
       setUrl("");
@@ -58,7 +60,8 @@ export default function AddPost({ pictureUrl, setFormSubmitted }) {
             placeholder={"http://..."}
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            disabled={buttonDisabled}></input>
+            disabled={buttonDisabled}
+            required></input>
           <textarea
             data-test="description"
             type={"text"}
@@ -100,7 +103,6 @@ const ContainerAddPost = styled.div`
   }
   div:first-child {
     width: fit-content;
-
   }
   div:last-child {
     margin-left: 10px;
@@ -137,20 +139,21 @@ const ContainerAddPost = styled.div`
 
     height: 80%;
 
-    >input, textarea{
+    > input,
+    textarea {
       height: 30px;
       width: 100%;
 
       padding: 5px;
-      
+
       border: none;
       border-radius: 5px;
 
-      background-color: #EFEFEF;
+      background-color: #efefef;
     }
 
     //Input de descrição
-    >textarea{
+    > textarea {
       text-justify: start;
       height: 66px;
 
@@ -158,10 +161,10 @@ const ContainerAddPost = styled.div`
     }
 
     //Botão de publicação
-    >:last-child{
+    > :last-child {
       width: 112px;
 
-      background-color: #1877F2;
+      background-color: #1877f2;
       color: #ffff;
     }
   }
