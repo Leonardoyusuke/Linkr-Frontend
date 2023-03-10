@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useState, useContext, } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
+import styled from "styled-components";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
-import { AuthContext } from "../contexts/AuthContext";
 
 export default function Post({ body, liked }) {
   const [clickLike, setClickLike] = useState(!liked);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const { REACT_APP_API_URL } = process.env;
+  console.log(body);
   const { infosUser } = useContext(AuthContext);
   async function like(postId) {
     setButtonDisabled(true);
@@ -28,7 +29,6 @@ export default function Post({ body, liked }) {
       setClickLike((current) => !current);
       setButtonDisabled(false);
     }
-
     return;
   }
   return (
@@ -38,24 +38,32 @@ export default function Post({ body, liked }) {
         <ContainerLike
           clicked={clickLike}
           onClick={() => {
-            like(body.id);
+            setClickLike((current) => !current);
           }}
-          disabled={buttonDisabled}>
+        >
           {clickLike ? <AiOutlineHeart /> : <AiFillHeart />}
         </ContainerLike>
-        <div>{body.likes} likes</div>
       </div>
       <div>
-        <h1>{username}</h1>
-        {description ? (
+        <h1>{body.username}</h1>
+        {body.description ? (
           <ReactTagify colors="white" tagClicked={(tag) => console.log(tag)}>
-            <h2>{description}</h2>
+            <h2>{body.description}</h2>
           </ReactTagify>
         ) : (
-          <h2>{description}</h2>
+          <h2>{body.description}</h2>
         )}
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          <section>{url}</section>
+        <a href={body.url} target="_blank" rel="noopener noreferrer">
+          <section>
+            <div>
+              <h1>{body.urlTitle}</h1>
+              <h2>{body.urlDescription}</h2>
+              <h3>{body.url}</h3>
+            </div>
+            <div>
+              <img src={body.urlImage} alt="imagePost" />
+            </div>
+          </section>
         </a>
       </div>
     </ContainerPost>
