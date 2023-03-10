@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
+import { ReactTagify } from "react-tagify";
 
 export default function Post({ body }) {
   const [clickLike, setClickLike] = useState(true);
@@ -19,7 +20,9 @@ export default function Post({ body }) {
       </div>
       <div>
         <h1>{body.username}</h1>
+        <ReactTagify colors="white" tagClicked={(tag)=> console.log(tag)}>
         <h2>{body.description}</h2>
+        </ReactTagify>
         <a href={body.url} target="_blank" rel="noopener noreferrer">
           <section>
             <div>
@@ -39,7 +42,7 @@ export default function Post({ body }) {
 
 const ContainerPost = styled.div`
   background-color: #171717;
-  color: #7b7b7b;
+  color: #b7b7b7;
   width: 600px;
   height: fit-content;
   border-radius: 15px;
@@ -60,6 +63,7 @@ const ContainerPost = styled.div`
     margin-left: 10px;
     width: calc(100% - 40px - 10px);
     h1 {
+      color: #ffffff;
       font-size: 20px;
     }
     h2 {
