@@ -1,34 +1,33 @@
-import styled from "styled-components"
-import { AiOutlineDown } from "react-icons/ai"
-import { IconContext } from "react-icons"
-import { useState } from "react"
-import SearchBar from "./SearchBar.js"
+import styled from "styled-components";
+import { AiOutlineDown } from "react-icons/ai";
+import { IconContext } from "react-icons";
+import { useState } from "react";
+import SearchBar from "./SearchBar.js";
 import { useNavigate } from "react-router";
-
+import { Link } from "react-router-dom";
 
 export default function NavBar(imgUrl) {
-    const [menu, setMenu] = useState(false)
+  const [menu, setMenu] = useState(false);
 
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
-    function toggleMenu() {
-        setMenu(!menu)
-    }
+  function toggleMenu() {
+    setMenu(!menu);
+  }
 
-    function logout() {
-        if (localStorage.getItem("userToken")) localStorage.removeItem("userToken")
-        if (localStorage.getItem("userImgUrl")) localStorage.removeItem("userImgUrl")
-        navigate("/")
-    }
+  function logout() {
+    if (localStorage.getItem("userToken")) localStorage.removeItem("userToken");
+    if (localStorage.getItem("userImgUrl")) localStorage.removeItem("userImgUrl");
+    navigate("/");
+  }
 
+  return (
+    <Container>
+      <Logo>
+        <Link to={"/timeline"}>linkr</Link>
+      </Logo>
 
-    return (
-        <Container>
-            <Logo>
-                linkr
-            </Logo>
-
-            <SearchBar />
+      <SearchBar />
 
             <Menu menu={menu} onClick={toggleMenu}>
                 <div>
@@ -48,23 +47,29 @@ export default function NavBar(imgUrl) {
 }
 
 const Container = styled.div`
-    display: flex;
-    height: 70px;
-    width: 100%;
-    position: fixed;
+  display: flex;
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
 
-    align-items: center;
-    justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 
-    padding: 0 20px 0 30px;
+  padding: 0 20px 0 30px;
 
-    background-color: #151515;
-`
+  background-color: #151515;
+`;
 const Logo = styled.div`
-    font-family: 'Passion One', cursive;
-    color: #ffff;
-    font-size: 49px;
-`
+  font-family: "Passion One", cursive;
+  color: #ffffff;
+  font-size: 49px;
+  > a {
+    text-decoration: none;
+    color: #ffffff;
+  }
+`;
 const MenuBackground = styled.div`
 
     display: ${props => (props.menu) ? 'block' : "none"};
@@ -79,53 +84,53 @@ const MenuBackground = styled.div`
 `
 
 const Menu = styled.div`
-    cursor: pointer;
+  cursor: pointer;
 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 90px;
+
+  z-index: ${(props) => (props.menu ? 2 : 1)};
+
+  > div {
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
-    width: 90px;
-
-    z-index: ${props => (props.menu) ? 2 : 1};
-    
-    >div{
-        display: flex;
-        align-items: center;
-
-        rotate: ${props => (props.menu) ? "180deg" : 0};
-    }
-`
+    rotate: ${(props) => (props.menu ? "180deg" : 0)};
+  }
+`;
 const UserImg = styled.img`
-    display: flex;
-    width: 53px;
-    height: 53px;
+  display: flex;
+  width: 53px;
+  height: 53px;
 
-    object-fit: cover;
-    background-color: gray;
+  object-fit: cover;
+  background-color: gray;
 
-    border-radius: 50%;
-`
+  border-radius: 50%;
+`;
 const Options = styled.div`
-    display: flex;
-    cursor: pointer;
+  display: flex;
+  cursor: pointer;
 
-    position: absolute;
-    z-index: ${props => (props.menu) ? 1 : -1};
-    right: 0;
-    top: ${props => (props.menu) ? "70px" : 0};
+  position: absolute;
+  z-index: ${(props) => (props.menu ? 1 : -1)};
+  right: 0;
+  top: ${(props) => (props.menu ? "70px" : 0)};
 
-    width: 150px;
-    height: 47px;
+  width: 150px;
+  height: 47px;
 
-    border-radius: 0 0 0 20px;
+  border-radius: 0 0 0 20px;
 
-    color: #ffff;
-    align-items: center;
-    justify-content:center;
+  color: #ffff;
+  align-items: center;
+  justify-content: center;
 
-    font-size: 17px;
-    font-family: 'Lato', sans-serif;
+  font-size: 17px;
+  font-family: "Lato", sans-serif;
 
-    background-color: #151515;
-`
+  background-color: #151515;
+`;
