@@ -2,29 +2,34 @@ import styled from "styled-components";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-import Post from "../components/Post";
+import { useNavigate, useParams} from "react-router-dom";
+import PostUser from "../components/PostUser.js";
 import Loading from "../components/Loading";
 import NavBar from "../components/NavBar";
-import AddPost from "../components/AddPost";
 
-export default function TimeLine() {
+
+export default function UserTimeLine() {
   const { infosUser } = useContext(AuthContext);
-  const [post, setPost] = useState([]);
+  const { infoUsername,setInfoUsername } = useContext(AuthContext)
+  const [postUser, setPostUser] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
   const { REACT_APP_API_URL } = process.env;
+  const userId = useParams().id;
   useEffect(() => {
     if (!infosUser) {
       return navigate("/");
     }
-    const res = axios.get(`${REACT_APP_API_URL}/posts`, {
+    const res = axios.get(`${REACT_APP_API_URL}/posts/${userId}`,  {
       headers: { Authorization: `Bearer ${infosUser.token}` },
     });
     res.then((res) => {
-      setPost(res.data);
+      setPostUser(res.data);
+      setInfoUsername(res.data[0].username)
+      console.log(res.data[0].username,"res")
+      
       setLoading(true);
+    
     });
     res.catch(() => {
       alert(
@@ -39,22 +44,18 @@ export default function TimeLine() {
   if (!loading) {
     return <Loading />;
   }
+
   return (
     <Container>
       <NavBar />
       <ContainerAddPost>
-        <div>
-          <h1>timeline</h1>
-        </div>
-        <AddPost
-          pictureUrl={localStorage.getItem("userImgUrl")}
-          setFormSubmitted={setFormSubmitted}
-        />
+          <h1>{infoUsername}'s posts</h1>
+
       </ContainerAddPost>
-      {post.length !== 0 ? (
+      {postUser.length !== 0 ? (
         <ContainerPosts>
-          {post.map((p) => (
-            <Post
+          {postUser.map((p) => (
+            <PostUser
               userId={p.userId}
               username={p.username}
               pictureUrl={p.pictureUrl}

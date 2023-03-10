@@ -3,6 +3,7 @@ import AuthProvider from "./contexts/AuthContext";
 import SigninPage from "./routes/SigninPage";
 import SignupPage from "./routes/SignupPage";
 import TimeLine from "./routes/TimeLine";
+import UserTimeLine from "./routes/UserTimeLine.jsx"
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
           <Route path="/" element={<SigninPage />} />
           <Route path="/sign-up" element={<SignupPage />} />
           <Route path="/timeline" element={<TimeLine />} />
-         {/* </Routes> <Route path="/user/:id" element={</>}/> */}
+          <Route path="/user/:id" element={<UserTimeLine />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

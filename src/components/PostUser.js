@@ -3,8 +3,9 @@ import styled from "styled-components";
 // import urlMetadata from "url-metadata";
 import { useNavigate } from "react-router-dom";
 
-export default function Post({ username, pictureUrl, description, url, userId }) {
+export default function PostUser({ username, pictureUrl, description, url, userId }) {
   const navigate = useNavigate()
+  
 
   // async function getMetadata(url) {
   //   try {
@@ -22,7 +23,7 @@ export default function Post({ username, pictureUrl, description, url, userId })
         <img src={pictureUrl} alt="imagePost" />
       </div>
       <div>
-        <h1  onClick={({username}) => navigate(`/user/${userId}`)} >{username}</h1>
+        <h1  >{username}</h1>
         <h2>{description}</h2>
         <a href={url} target="_blank" rel="noopener noreferrer">
           <section>{url}</section>
