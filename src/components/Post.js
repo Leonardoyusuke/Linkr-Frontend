@@ -18,9 +18,13 @@ export default function Post({ username, pictureUrl, description, url }) {
       </div>
       <div>
         <h1>{username}</h1>
-        <ReactTagify colors="white" tagClicked={(tag)=> console.log(tag)}>
-        <h2>{description}</h2>
-        </ReactTagify>
+        {description ? (
+          <ReactTagify colors="white" tagClicked={(tag) => console.log(tag)}>
+            <h2>{description}</h2>
+          </ReactTagify>
+        ) : (
+          <h2>{description}</h2>
+        )}
         <a href={url} target="_blank" rel="noopener noreferrer">
           <section>{url}</section>
         </a>
