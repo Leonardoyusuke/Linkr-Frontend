@@ -82,7 +82,7 @@ export default function AddPost({ pictureUrl, setFormSubmitted }) {
 
 const ContainerAddPost = styled.div`
   background: #ffffff;
-  width: 600px;
+  width: 100%;
   height: 200px;
   border-radius: 15px;
   border: none;
