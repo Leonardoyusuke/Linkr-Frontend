@@ -2,23 +2,30 @@ import styled from "styled-components";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Post from "../components/Post";
 import Loading from "../components/Loading";
 import NavBar from "../components/NavBar";
 import AddPost from "../components/AddPost";
 
-export default function TimeLine() {
+export default function TagPage(props) {
+  const { REACT_APP_API_URL } = process.env;
+
+  const navigate = useNavigate();
+
   const { infosUser } = useContext(AuthContext);
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const navigate = useNavigate();
-  const { REACT_APP_API_URL } = process.env;
+
+  const params = useParams();
+  const tag = `#${params.tag}`;
+
   useEffect(() => {
     if (!infosUser) {
       return navigate("/");
     }
+
     const res = axios.get(`${REACT_APP_API_URL}/posts`, {
       headers: { Authorization: `Bearer ${infosUser.token}` },
     });
@@ -37,15 +44,21 @@ export default function TimeLine() {
   return (
     <Container>
       <NavBar />
-      <h1>timeline</h1>
-      <ContainerAddPost>
-        <AddPost pictureUrl={infosUser.imgUrl} setFormSubmitted={setFormSubmitted} />
-      </ContainerAddPost>
+      <h1>{tag}</h1>
       {post.length !== 0 ? (
         <ContainerPosts>
-          {post.map((p) => (
-            <Post key={p.id} body={p} liked={p.likesUserId.includes(parseInt(infosUser.userId))} />
-          ))}
+          {post.map((p) => {
+            console.log(p, tag);
+            if (p.description && p.description.includes(tag)) {
+              return (
+                <Post
+                  key={p.id}
+                  body={p}
+                  liked={p.likesUserId.includes(parseInt(infosUser.userId))}
+                />
+              );
+            }
+          })}
         </ContainerPosts>
       ) : (
         <div>There are no posts yet</div>
@@ -68,16 +81,6 @@ const Container = styled.div`
     color: #ffffff;
     margin-bottom: 40px;
   }
-`;
-
-const ContainerAddPost = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: fit-content;
-  align-items: center;
-  margin-top: 80px;
-  margin-bottom: 30px;
-  width: 600px;
 `;
 
 const ContainerPosts = styled.div`

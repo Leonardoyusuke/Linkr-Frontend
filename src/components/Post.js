@@ -1,16 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
 import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Post({ body, liked }) {
   const [clickLike, setClickLike] = useState(!liked);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const { REACT_APP_API_URL } = process.env;
   const { infosUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   async function like(postId) {
     setButtonDisabled(true);
     setClickLike((current) => !current);
@@ -28,9 +31,16 @@ export default function Post({ body, liked }) {
       setClickLike((current) => !current);
       setButtonDisabled(false);
     }
-
     return;
   }
+
+  async function handleTag(tag){
+    const normalizedTag = tag.match(/[\wñÑáéíóúÁÉÍÓÚãÃõÕâÂêÊôÔ]+/g)[0];
+    const cleanTag = tag.match(/#[\wñÑáéíóúÁÉÍÓÚãÃõÕâÂêÊôÔ]+/g)[0];
+    // const updateClicks = await axios.post()
+    navigate(`/hashtag/${normalizedTag}`, {cleanTag: cleanTag})
+  }
+
   return (
     <ContainerPost>
       <div>
@@ -49,7 +59,10 @@ export default function Post({ body, liked }) {
       <div>
         <h1>{body.username}</h1>
         {body.description ? (
-          <ReactTagify colors="white" tagClicked={(tag) => console.log(tag)}>
+          <ReactTagify
+            colors="white"
+            tagClicked={(tag) => handleTag(tag)}
+          >
             <h2>{body.description}</h2>
           </ReactTagify>
         ) : (
@@ -75,7 +88,7 @@ export default function Post({ body, liked }) {
 const ContainerPost = styled.div`
   background-color: #171717;
   color: #b7b7b7;
-  width: 600px;
+  width: 100%;
   height: fit-content;
   border-radius: 15px;
   border: none;
