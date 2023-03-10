@@ -32,7 +32,7 @@ export default function TimeLine() {
       );
       setLoading(true);
     });
-  }, [REACT_APP_API_URL, infosUser, navigate]);
+  }, [REACT_APP_API_URL, infosUser, navigate, formSubmitted]);
   if (!infosUser) {
     return navigate("/");
   }
@@ -47,7 +47,7 @@ export default function TimeLine() {
           <h1>timeline</h1>
         </div>
         <AddPost
-          pictureUrl={localStorage.getItem("userImgUrl")}
+          pictureUrl={infosUser.imgUrl}
           setFormSubmitted={setFormSubmitted}
         />
       </ContainerAddPost>
@@ -55,10 +55,9 @@ export default function TimeLine() {
         <ContainerPosts>
           {post.map((p) => (
             <Post
-              username={p.username}
-              pictureUrl={p.pictureUrl}
-              description={p.description}
-              url={p.url}
+              key={p.id}
+              body={p}
+              liked={p.likesUserId.includes(parseInt(infosUser.userId))}
             />
           ))}
         </ContainerPosts>

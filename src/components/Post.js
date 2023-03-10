@@ -1,20 +1,49 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
+import { AuthContext } from "../contexts/AuthContext";
 
-export default function Post({ username, pictureUrl, description, url }) {
-  // async function getMetadata(url) {
-  //   try {
-  //     const metadata = await urlMetadata(url);
-  //     console.log(metadata);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+export default function Post({ body, liked }) {
+  const [clickLike, setClickLike] = useState(!liked);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { REACT_APP_API_URL } = process.env;
+  const { infosUser } = useContext(AuthContext);
+  async function like(postId) {
+    setButtonDisabled(true);
+    setClickLike((current) => !current);
+    try {
+      await axios.post(
+        `${REACT_APP_API_URL}/likes`,
+        { postId },
+        {
+          headers: { Authorization: `Bearer ${infosUser.token}` },
+        }
+      );
+      setButtonDisabled(false);
+    } catch (res) {
+      console.log(res.response.status);
+      setClickLike((current) => !current);
+      setButtonDisabled(false);
+    }
+
+    return;
+  }
   return (
     <ContainerPost>
       <div>
-        <img src={pictureUrl} alt="imagePost" />
+        <img src={body.pictureUrl} alt="imagePost" />
+        <ContainerLike
+          clicked={clickLike}
+          onClick={() => {
+            like(body.id);
+          }}
+          disabled={buttonDisabled}>
+          {clickLike ? <AiOutlineHeart /> : <AiFillHeart />}
+        </ContainerLike>
+        <div>{body.likes} likes</div>
       </div>
       <div>
         <h1>{username}</h1>
@@ -63,4 +92,31 @@ const ContainerPost = styled.div`
       font-size: 18px;
     }
   }
+  section {
+    display: flex;
+    box-sizing: border-box;
+    width: 500px;
+    height: 150px;
+    border: 1px solid #4d4d4d;
+    border-radius: 11px;
+    img {
+      width: 153.44px;
+      height: 150px;
+      border-radius: 0px 12px 13px 0px;
+    }
+    h1 {
+      font-size: 16px;
+    }
+    h2 {
+      font-size: 11px;
+    }
+    h3 {
+      font-size: 11px;
+    }
+  }
+`;
+
+const ContainerLike = styled.div`
+  color: ${(props) => (props.clicked ? "" : "red")};
+  cursor: pointer;
 `;
