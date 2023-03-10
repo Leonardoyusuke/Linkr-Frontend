@@ -75,7 +75,7 @@ const ContainerAddPost = styled.div`
   flex-direction: column;
   height: fit-content;
   align-items: center;
-  margin-top: 80px;
+  margin-top: 130px;
   margin-bottom: 30px;
   width: 600px;
 `;
