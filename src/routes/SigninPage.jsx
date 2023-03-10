@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FallingLines } from "react-loader-spinner";
+import { Bars } from "react-loader-spinner";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function SigninPage() {
@@ -76,9 +76,9 @@ export default function SigninPage() {
 
           <button type="submit" disabled={loading} data-test="login-btn">
             {loading ? (
-              <FallingLines
+              <Bars
                 color="#ffff"
-                width="60"
+                width="40"
                 visible={true}
                 ariaLabel="falling-lines-loading"
               />
@@ -202,6 +202,10 @@ const LoginContainer = styled.div`
       font-size: 27px;
       font-weight: 700;
       color: #ffff;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       width: 100%;
       height: 65px;

@@ -29,21 +29,21 @@ export default function NavBar(imgUrl) {
 
       <SearchBar />
 
-      <Menu menu={menu} onClick={toggleMenu}>
-        <div>
-          <IconContext.Provider value={{ color: "white", size: "1.7em" }}>
-            <AiOutlineDown />
-          </IconContext.Provider>
-        </div>
-        <UserImg src={localStorage.getItem("userImgUrl")} alt="" />
-      </Menu>
-      {/* <MenuBackground menu={menu} onClick={toggleMenu}> */}
-      <Options onClick={logout} menu={menu}>
-        <p>Logout</p>
-      </Options>
-      {/* </MenuBackground> */}
-    </Container>
-  );
+            <Menu menu={menu} onClick={toggleMenu}>
+                <div>
+                    <IconContext.Provider value={{ color: "white", size: '1.7em' }}>
+                        <AiOutlineDown />
+                    </IconContext.Provider>
+                </div>
+                <UserImg data-test="avatar" src={localStorage.getItem("userImgUrl")} alt='' />
+            </Menu>
+            <MenuBackground menu={menu} onClick={toggleMenu}>
+                <Options data-test="menu" onClick={logout} menu={menu}>
+                    <p data-test="logout" >Logout</p>
+                </Options>
+            </MenuBackground>
+        </Container>
+    )
 }
 
 const Container = styled.div`
@@ -70,19 +70,18 @@ const Logo = styled.div`
     color: #ffffff;
   }
 `;
-// const MenuBackground = styled.div`
-//     background-color: rgba(0, 0, 0, 0.5);
+const MenuBackground = styled.div`
 
-//     z-index: ${props => (props.menu) ? 1 : -1};
+    display: ${props => (props.menu) ? 'block' : "none"};
 
-//     position: absolute;
-//     left: 0;
-//     top: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
 
-//     width: 100vw;
-//     height: 100vh;
+    width: 100vw;
+    height: 100vh;
 
-// `
+`
 
 const Menu = styled.div`
   cursor: pointer;
