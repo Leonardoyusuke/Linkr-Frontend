@@ -46,21 +46,16 @@ export default function Post({ body, liked }) {
         <div>{body.likes} likes</div>
       </div>
       <div>
-        <h1>{body.username}</h1>
-        {/* <ReactTagify colors="white" tagClicked={(tag)=> console.log(tag)}> */}
-        <h2>{body.description}</h2>
-        {/* </ReactTagify> */}
-        <a href={body.url} target="_blank" rel="noopener noreferrer">
-          <section>
-            <div>
-              <h1>{body.urlTitle}</h1>
-              <h2>{body.urlDescription}</h2>
-              <h3>{body.url}</h3>
-            </div>
-            <div>
-              <img src={body.urlImage} alt="imagePost" />
-            </div>
-          </section>
+        <h1>{username}</h1>
+        {description ? (
+          <ReactTagify colors="white" tagClicked={(tag) => console.log(tag)}>
+            <h2>{description}</h2>
+          </ReactTagify>
+        ) : (
+          <h2>{description}</h2>
+        )}
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          <section>{url}</section>
         </a>
       </div>
     </ContainerPost>
