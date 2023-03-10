@@ -42,7 +42,7 @@ export default function SearchBar() {
     }
 
     return (
-        <SearchBarContainer  >
+        <SearchBarContainer data-test="search" >
             <FixSearch>
                 <SearchInput
                     minLength={3}
@@ -53,7 +53,7 @@ export default function SearchBar() {
             </FixSearch>
             <SearchBarResult>
                 {(!searchResult ? (<></>) :
-                    (searchResult.map((r) => <ResultBox>
+                    (searchResult.map((r) => <ResultBox data-test="user-search">
                         <Img onClick={() => { goUserPage(r.id) }} src={r.pictureUrl} />
                         <Username onClick={() => { goUserPage(r.id) }} >{r.username}</Username>
                     </ResultBox>
