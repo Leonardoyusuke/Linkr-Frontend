@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { AiOutlineDown } from "react-icons/ai"
 import { IconContext } from "react-icons"
 import { useState } from "react"
-import SearchBar from "./SearchBar"
+import SearchBar from "./SearchBar.js"
 import { useNavigate } from "react-router";
 
 
@@ -27,8 +27,8 @@ export default function NavBar(imgUrl) {
             <Logo>
                 linkr
             </Logo>
-            
-            <SearchBar/>
+
+            <SearchBar />
 
             <Menu menu={menu} onClick={toggleMenu}>
                 <div>
@@ -36,7 +36,7 @@ export default function NavBar(imgUrl) {
                         <AiOutlineDown />
                     </IconContext.Provider>
                 </div>
-                <UserImg href={imgUrl} alt='' />
+                <UserImg src={localStorage.getItem("userImgUrl")} alt='' />
             </Menu>
             {/* <MenuBackground menu={menu} onClick={toggleMenu}> */}
                 <Options onClick={logout} menu={menu}>

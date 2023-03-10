@@ -37,8 +37,8 @@ export default function SigninPage() {
             localStorage.setItem("userToken", res.data.token)
 
             setInfosUser(res.data);
-            if (res.data.imgUrl) {
-                localStorage.setItem("userImgUrl", res.data.imgUrl)
+            if (res.data.userImgUrl) {
+                localStorage.setItem("userImgUrl", res.data.userImgUrl)
             }
 
             navigate("/timeline")
@@ -59,17 +59,19 @@ export default function SigninPage() {
             <LoginContainer>
                 <form onSubmit={(e) => handleLogin(e)}>
                     <input
+                        data-test="email"
                         type="email"
                         placeholder="e-mail"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}></input>
                     <input
+                        data-test="password"
                         type="password"
                         placeholder="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}></input>
 
-                    <button type="submit" disabled={loading}>
+                    <button type="submit" disabled={loading} data-test="login-btn">
                         {loading ? (
                             <FallingLines
                                 color="#ffff"
@@ -82,7 +84,7 @@ export default function SigninPage() {
                         )}
                     </button>
                 </form >
-                <Link to="/sign-up">First time? Create an account!</Link>
+                <Link data-test="sign-up-link" to="/sign-up">First time? Create an account!</Link>
             </LoginContainer >
         </Container >
     );
