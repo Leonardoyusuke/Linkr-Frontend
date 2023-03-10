@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
+import "react-tooltip/dist/react-tooltip.css";
 import styled from "styled-components";
 import axios from "axios";
-import { Tooltip } from "react-tooltip";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
@@ -10,6 +10,8 @@ import { AuthContext } from "../contexts/AuthContext";
 export default function Post({ body, liked }) {
   const [clickLike, setClickLike] = useState(!liked);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [textHovered, setTextHovered] = useState(body.likesUsernames);
   const { REACT_APP_API_URL } = process.env;
   const { infosUser } = useContext(AuthContext);
   async function like(postId) {
@@ -31,6 +33,12 @@ export default function Post({ body, liked }) {
     }
     return;
   }
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
   return (
     <ContainerPost>
       <div>
@@ -43,14 +51,12 @@ export default function Post({ body, liked }) {
           disabled={buttonDisabled}>
           {clickLike ? <AiOutlineHeart /> : <AiFillHeart />}
         </ContainerLike>
-        <div>
-          <div data-tip="Tooltip content" data-for="my-button">
-            {body.likes} likes
-          </div>
-          <Tooltip id="my-button" effect="solid">
-            This is the tooltip content
-          </Tooltip>
-        </div>
+        <ContainerNumberLikes
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}>
+          <h4>{body.likes} likes</h4>
+          {isHovered && <div>{textHovered}</div>}
+        </ContainerNumberLikes>
       </div>
       <div>
         <h1>{body.username}</h1>
@@ -64,9 +70,9 @@ export default function Post({ body, liked }) {
         <a href={body.url} target="_blank" rel="noopener noreferrer">
           <section>
             <div>
-              <h1>{body.urlTitle}</h1>
-              <h2>{body.urlDescription}</h2>
-              <h3>{body.url}</h3>
+              <h3>{body.urlTitle}</h3>
+              <h4>{body.urlDescription}</h4>
+              <h4>{body.url}</h4>
             </div>
             <div>
               <img src={body.urlImage} alt="imagePost" />
@@ -89,45 +95,70 @@ const ContainerPost = styled.div`
   font-size: 20px;
   padding: 15px;
   display: flex;
-  div:first-child {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  a {
+    text-decoration: none;
+    h3 {
+      color: #cecece;
+    }
+    h4 {
+      color: #9b9595;
+    }
+  }
+  > div:first-child {
     width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     img {
       width: 50px;
       height: 50px;
       border-radius: 100%;
+      margin-bottom: 15px;
     }
   }
-  div:last-child {
-    margin-left: 10px;
+  > div:last-child {
+    margin-left: 20px;
     width: calc(100% - 40px - 10px);
     h1 {
       color: #ffffff;
-      font-size: 20px;
+      font-size: 19px;
+      margin-bottom: 7px;
     }
     h2 {
-      font-size: 18px;
+      font-size: 17px;
+      margin-bottom: 10px;
     }
   }
   section {
     display: flex;
     box-sizing: border-box;
     width: 500px;
-    height: 150px;
+    height: fit-content;
     border: 1px solid #4d4d4d;
     border-radius: 11px;
     img {
-      width: 153.44px;
-      height: 150px;
-      border-radius: 0px 12px 13px 0px;
-    }
-    h1 {
-      font-size: 16px;
-    }
-    h2 {
-      font-size: 11px;
+      width: 180px;
+      height: 100%;
+      border-radius: 0px 11px 11px 0px;
     }
     h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    h4 {
       font-size: 11px;
+      margin-bottom: 10px;
+    }
+    > div:first-child {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+    }
+    > div:last-child {
+      width: fit-content;
     }
   }
 `;
@@ -135,4 +166,22 @@ const ContainerPost = styled.div`
 const ContainerLike = styled.div`
   color: ${(props) => (props.clicked ? "" : "red")};
   cursor: pointer;
+`;
+
+const ContainerNumberLikes = styled.div`
+  position: relative;
+  font-size: 11px;
+  > div {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
 `;
