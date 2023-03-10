@@ -5,74 +5,74 @@ import styled from "styled-components"
 import { FallingLines } from "react-loader-spinner"
 
 export default function SignupPage() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [username, setUsername] = useState('')
-    const [pictureUrl, setPictureUrl] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const [pictureUrl, setPictureUrl] = useState('')
 
-    const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-    function handleSignup(e) {
-        e.preventDefault()
-        setLoading(true)
+  function handleSignup(e) {
+    e.preventDefault()
+    setLoading(true)
 
-        if (email === '' || password === '' || username === '' || pictureUrl === '') {
-            alert('Please fill in all fields')
-            setLoading(false)
-            return
-        }
-
-        const body = {
-            email: email,
-            password: password,
-            username: username,
-            pictureUrl: pictureUrl
-        }
-
-        const promise = axios.post(process.env.REACT_APP_API_URL + '/signup', body)
-        promise.then(res => navigate('/'))
-        promise.catch(err => {
-            setLoading(false)
-            if (err.response.status === 409) return alert("This email is already registered")
-            console.log(err.response)
-        })
-
-
+    if (email === '' || password === '' || username === '' || pictureUrl === '') {
+      alert('Please fill in all fields')
+      setLoading(false)
+      return
     }
 
-    return (
-        <Container>
-            <LogoContainer>
-                <h1>linkr</h1>
-                <p>save, share and discover the best links on the web</p>
-            </LogoContainer>
-            <SigninContainer>
-                <form onSubmit={e => handleSignup(e)}>
-                    <input type="email" placeholder="e-mail" value={email} onChange={e => setEmail(e.target.value)}></input>
-                    <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)}></input>
-                    <input type="text" placeholder="username" value={username} onChange={e => setUsername(e.target.value)}></input>
-                    <input type="text" placeholder="picture url" value={pictureUrl} onChange={e => setPictureUrl(e.target.value)}></input>
+    const body = {
+      email: email,
+      password: password,
+      username: username,
+      pictureUrl: pictureUrl
+    }
 
-                    <button type="submit" disabled={loading}>
-                        {(loading) ?
-                            <FallingLines
-                                color="#ffff"
-                                width="60"
-                                visible={true}
-                                ariaLabel='falling-lines-loading'
-                            /> :
-                            "Sign Up"
-                        }
-                    </button>
-                </form>
-                <Link to='/'>
-                    Switch back to log in
-                </Link>
-            </SigninContainer>
-        </Container>
-    )
+    const promise = axios.post(process.env.REACT_APP_API_URL + '/signup', body)
+    promise.then(res => navigate('/'))
+    promise.catch(err => {
+      setLoading(false)
+      if (err.response.status === 409) return alert("This email is already registered")
+      console.log(err.response)
+    })
+
+
+  }
+
+  return (
+    <Container>
+      <LogoContainer>
+        <h1>linkr</h1>
+        <p>save, share and discover the best links on the web</p>
+      </LogoContainer>
+      <SigninContainer>
+        <form onSubmit={e => handleSignup(e)}>
+          <input data-test="email" type="email" placeholder="e-mail" value={email} onChange={e => setEmail(e.target.value)}></input>
+          <input data-test="password" type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)}></input>
+          <input data-test="username" type="text" placeholder="username" value={username} onChange={e => setUsername(e.target.value)}></input>
+          <input data-test="picture-url" type="text" placeholder="picture url" value={pictureUrl} onChange={e => setPictureUrl(e.target.value)}></input>
+
+          <button type="submit" disabled={loading} data-test="sign-up-btn">
+            {(loading) ?
+              <FallingLines
+                color="#ffff"
+                width="60"
+                visible={true}
+                ariaLabel='falling-lines-loading'
+              /> :
+              "Sign Up"
+            }
+          </button>
+        </form>
+        <Link data-test="login-link" to='/'>
+          Switch back to log in
+        </Link>
+      </SigninContainer>
+    </Container>
+  )
 }
 
 const Container = styled.div`
