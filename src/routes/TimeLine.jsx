@@ -75,6 +75,7 @@ const Container = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
+  overflow-y: scroll;
   flex-direction: column;
   background-color: #333333;
 `;
