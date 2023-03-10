@@ -47,14 +47,18 @@ export default function TimeLine() {
           <h1>timeline</h1>
         </div>
         <AddPost
-          pictureUrl={localStorage.getItem("userImgUrl")}
+          pictureUrl={infosUser.imgUrl}
           setFormSubmitted={setFormSubmitted}
         />
       </ContainerAddPost>
       {post.length !== 0 ? (
         <ContainerPosts>
           {post.map((p) => (
-            <Post body={p} />
+            <Post
+              key={p.id}
+              body={p}
+              liked={p.likesUserId.includes(parseInt(infosUser.userId))}
+            />
           ))}
         </ContainerPosts>
       ) : (

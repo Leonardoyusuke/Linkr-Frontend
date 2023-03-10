@@ -1,11 +1,36 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
+import { AuthContext } from "../contexts/AuthContext";
 
-export default function Post({ body }) {
-  const [clickLike, setClickLike] = useState(true);
+export default function Post({ body, liked }) {
+  const [clickLike, setClickLike] = useState(!liked);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { REACT_APP_API_URL } = process.env;
+  const { infosUser } = useContext(AuthContext);
+  async function like(postId) {
+    setButtonDisabled(true);
+    setClickLike((current) => !current);
+    try {
+      await axios.post(
+        `${REACT_APP_API_URL}/likes`,
+        { postId },
+        {
+          headers: { Authorization: `Bearer ${infosUser.token}` },
+        }
+      );
+      setButtonDisabled(false);
+    } catch (res) {
+      console.log(res.response.status);
+      setClickLike((current) => !current);
+      setButtonDisabled(false);
+    }
+
+    return;
+  }
   return (
     <ContainerPost>
       <div>
@@ -13,16 +38,18 @@ export default function Post({ body }) {
         <ContainerLike
           clicked={clickLike}
           onClick={() => {
-            setClickLike((current) => !current);
-          }}>
+            like(body.id);
+          }}
+          disabled={buttonDisabled}>
           {clickLike ? <AiOutlineHeart /> : <AiFillHeart />}
         </ContainerLike>
+        <div>{body.likes} likes</div>
       </div>
       <div>
         <h1>{body.username}</h1>
-        <ReactTagify colors="white" tagClicked={(tag)=> console.log(tag)}>
+        {/* <ReactTagify colors="white" tagClicked={(tag)=> console.log(tag)}> */}
         <h2>{body.description}</h2>
-        </ReactTagify>
+        {/* </ReactTagify> */}
         <a href={body.url} target="_blank" rel="noopener noreferrer">
           <section>
             <div>
@@ -96,4 +123,5 @@ const ContainerPost = styled.div`
 
 const ContainerLike = styled.div`
   color: ${(props) => (props.clicked ? "" : "red")};
+  cursor: pointer;
 `;
