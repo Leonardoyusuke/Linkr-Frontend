@@ -45,7 +45,7 @@ export default function AddPost({ pictureUrl, setFormSubmitted }) {
     return;
   }
   return (
-    <ContainerAddPost>
+    <ContainerAddPost data-test="publish-box">
       <div>
         <img src={pictureUrl} alt="profilePicture" />
       </div>
@@ -53,18 +53,21 @@ export default function AddPost({ pictureUrl, setFormSubmitted }) {
         <h1>What are you going to share today?</h1>
         <form onSubmit={submit}>
           <input
+            data-test="link"
             type={"text"}
             placeholder={"http://..."}
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             disabled={buttonDisabled}></input>
           <textarea
+            data-test="description"
             type={"text"}
             placeholder={"Awesome article about #javascript"}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             disabled={buttonDisabled}></textarea>
           <input
+            data-test="publish-btn"
             type={"submit"}
             value={buttonValue}
             disabled={buttonDisabled}></input>

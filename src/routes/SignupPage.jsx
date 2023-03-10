@@ -2,7 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import { FallingLines } from "react-loader-spinner"
+import { Bars } from "react-loader-spinner"
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -57,9 +57,9 @@ export default function SignupPage() {
 
           <button type="submit" disabled={loading} data-test="sign-up-btn">
             {(loading) ?
-              <FallingLines
+              <Bars
                 color="#ffff"
-                width="60"
+                width="40"
                 visible={true}
                 ariaLabel='falling-lines-loading'
               /> :
@@ -183,6 +183,10 @@ const SigninContainer = styled.div`
       font-size: 27px;
       font-weight: 700;
       color: #ffff;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       width: 100%;
       height: 65px;

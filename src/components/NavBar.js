@@ -36,13 +36,13 @@ export default function NavBar(imgUrl) {
                         <AiOutlineDown />
                     </IconContext.Provider>
                 </div>
-                <UserImg src={localStorage.getItem("userImgUrl")} alt='' />
+                <UserImg data-test="avatar" src={localStorage.getItem("userImgUrl")} alt='' />
             </Menu>
-            {/* <MenuBackground menu={menu} onClick={toggleMenu}> */}
-                <Options onClick={logout} menu={menu}>
-                    <p>Logout</p>
+            <MenuBackground menu={menu} onClick={toggleMenu}>
+                <Options data-test="menu" onClick={logout} menu={menu}>
+                    <p data-test="logout" >Logout</p>
                 </Options>
-            {/* </MenuBackground> */}
+            </MenuBackground>
         </Container>
     )
 }
@@ -52,7 +52,6 @@ const Container = styled.div`
     height: 70px;
     width: 100%;
     position: fixed;
-
 
     align-items: center;
     justify-content: space-between;
@@ -66,19 +65,18 @@ const Logo = styled.div`
     color: #ffff;
     font-size: 49px;
 `
-// const MenuBackground = styled.div`
-//     background-color: rgba(0, 0, 0, 0.5);
+const MenuBackground = styled.div`
 
-//     z-index: ${props => (props.menu) ? 1 : -1};
+    display: ${props => (props.menu) ? 'block' : "none"};
 
-//     position: absolute;
-//     left: 0;
-//     top: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
 
-//     width: 100vw;
-//     height: 100vh;
+    width: 100vw;
+    height: 100vh;
 
-// `
+`
 
 const Menu = styled.div`
     cursor: pointer;
