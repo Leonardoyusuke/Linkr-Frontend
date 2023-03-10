@@ -1,31 +1,80 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-// import urlMetadata from "url-metadata";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Tooltip } from "react-tooltip";
+import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart } from "react-icons/ai";
+import { ReactTagify } from "react-tagify";
+import { AuthContext } from "../contexts/AuthContext"
+import { useNavigate } from "react-router-dom"; 
 
-export default function Post({ username, pictureUrl, description, url, userId }) {
-  const navigate = useNavigate()
-
-  // async function getMetadata(url) {
-  //   try {
-  //     const metadata = await urlMetadata(url);
-  //     console.log(metadata);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
-
+export default function Post({ body, liked }) {
+  const [clickLike, setClickLike] = useState(!liked);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { REACT_APP_API_URL } = process.env;
+   const navigate = useNavigate()
+  const { infosUser } = useContext(AuthContext);
+  console.log(body)
+  async function like(postId) {
+    setButtonDisabled(true);
+    setClickLike((current) => !current);
+    try {
+      await axios.post(
+        `${REACT_APP_API_URL}/likes`,
+        { postId },
+        {
+          headers: { Authorization: `Bearer ${infosUser.token}` },
+        }
+      );
+      setButtonDisabled(false);
+    } catch (res) {
+      console.log(res.response.status);
+      setClickLike((current) => !current);
+      setButtonDisabled(false);
+    }
+    return;
+  }
   return (
     <ContainerPost>
       <div>
-        <img src={pictureUrl} alt="imagePost" />
+        <img src={body.pictureUrl} alt="imagePost" />
+        <ContainerLike
+          clicked={clickLike}
+          onClick={() => {
+            like(body.id);
+          }}
+          disabled={buttonDisabled}>
+          {clickLike ? <AiOutlineHeart /> : <AiFillHeart />}
+        </ContainerLike>
+        <div>
+          <div data-tip="Tooltip content" data-for="my-button">
+            {body.likes} likes
+          </div>
+          <Tooltip id="my-button" effect="solid">
+            This is the tooltip content
+          </Tooltip>
+        </div>
       </div>
       <div>
-        <h1  onClick={({username}) => navigate(`/user/${userId}`)} >{username}</h1>
-        <h2>{description}</h2>
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          <section>{url}</section>
+        <h1 onClick={() => navigate(`/user/${body.userId}`)}>{body.username}</h1>
+        {body.description ? (
+          <ReactTagify colors="white" tagClicked={(tag) => console.log(tag)}>
+            <h2>{body.description}</h2>
+          </ReactTagify>
+        ) : (
+          <h2>{body.description}</h2>
+        )}
+        <a href={body.url} target="_blank" rel="noopener noreferrer">
+          <section>
+            <div>
+              <h1>{body.urlTitle}</h1>
+              <h2>{body.urlDescription}</h2>
+              <h3>{body.url}</h3>
+            </div>
+            <div>
+              <img src={body.urlImage} alt="imagePost" />
+            </div>
+          </section>
         </a>
       </div>
     </ContainerPost>
@@ -34,7 +83,7 @@ export default function Post({ username, pictureUrl, description, url, userId })
 
 const ContainerPost = styled.div`
   background-color: #171717;
-  color: #7b7b7b;
+  color: #b7b7b7;
   width: 600px;
   height: fit-content;
   border-radius: 15px;
@@ -55,10 +104,38 @@ const ContainerPost = styled.div`
     margin-left: 10px;
     width: calc(100% - 40px - 10px);
     h1 {
+      color: #ffffff;
       font-size: 20px;
     }
     h2 {
       font-size: 18px;
     }
   }
+  section {
+    display: flex;
+    box-sizing: border-box;
+    width: 500px;
+    height: 150px;
+    border: 1px solid #4d4d4d;
+    border-radius: 11px;
+    img {
+      width: 153.44px;
+      height: 150px;
+      border-radius: 0px 12px 13px 0px;
+    }
+    h1 {
+      font-size: 16px;
+    }
+    h2 {
+      font-size: 11px;
+    }
+    h3 {
+      font-size: 11px;
+    }
+  }
+`;
+
+const ContainerLike = styled.div`
+  color: ${(props) => (props.clicked ? "" : "red")};
+  cursor: pointer;
 `;

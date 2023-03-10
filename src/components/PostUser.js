@@ -2,25 +2,60 @@ import React from "react";
 import styled from "styled-components";
 // import urlMetadata from "url-metadata";
 import { useNavigate } from "react-router-dom";
+import  { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { Tooltip } from "react-tooltip";
+import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart } from "react-icons/ai";
+import { ReactTagify } from "react-tagify";
+import { AuthContext } from "../contexts/AuthContext"
 
-export default function PostUser({ username, pictureUrl, description, url, userId }) {
+export default function PostUser({ username, pictureUrl, description, url, userId,body,liked }) {
   const navigate = useNavigate()
-  
+  const [clickLike, setClickLike] = useState(!liked);
+  const { infosUser } = useContext(AuthContext);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { REACT_APP_API_URL } = process.env;
 
-  // async function getMetadata(url) {
-  //   try {
-  //     const metadata = await urlMetadata(url);
-  //     console.log(metadata);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
+  async function like(postId) {
+    setButtonDisabled(true);
+    setClickLike((current) => !current);
+    try {
+      await axios.post(
+        `${REACT_APP_API_URL}/likes`,
+        { postId },
+        {
+          headers: { Authorization: `Bearer ${infosUser.token}` },
+        }
+      );
+      setButtonDisabled(false);
+    } catch (res) {
+      console.log(res.response.status);
+      setClickLike((current) => !current);
+      setButtonDisabled(false);
+    }
+    return;}
 
   return (
     <ContainerPost>
       <div>
         <img src={pictureUrl} alt="imagePost" />
+        <ContainerLike
+          clicked={clickLike}
+          onClick={() => {
+            like(body.id);
+          }}
+          disabled={buttonDisabled}>
+          {clickLike ? <AiOutlineHeart /> : <AiFillHeart />}
+        </ContainerLike>
+        <div>
+          <div data-tip="Tooltip content" data-for="my-button">
+            {/* {body.likes} likes */}
+          </div>
+          <Tooltip id="my-button" effect="solid">
+            This is the tooltip content
+          </Tooltip>
+        </div>
       </div>
       <div>
         <h1  >{username}</h1>
@@ -63,3 +98,7 @@ const ContainerPost = styled.div`
     }
   }
 `;
+const ContainerLike = styled.div`
+  color: ${(props) => (props.clicked ? "" : "red")};
+  cursor: pointer;
+`

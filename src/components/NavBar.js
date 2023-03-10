@@ -36,11 +36,11 @@ export default function NavBar(imgUrl) {
                         <AiOutlineDown />
                     </IconContext.Provider>
                 </div>
-                <UserImg src={localStorage.getItem("userImgUrl")} alt='' />
+                <UserImg data-test="avatar" src={localStorage.getItem("userImgUrl")} alt='' />
             </Menu>
             <MenuBackground menu={menu} onClick={toggleMenu}>
-                <Options onClick={logout} menu={menu}>
-                    <p>Logout</p>
+                <Options data-test="menu" onClick={logout} menu={menu}>
+                    <p data-test="logout" >Logout</p>
                 </Options>
             </MenuBackground>
         </Container>
@@ -51,7 +51,7 @@ const Container = styled.div`
     display: flex;
     height: 70px;
     width: 100%;
-    position: relative;
+    position: fixed;
 
     align-items: center;
     justify-content: space-between;
@@ -66,9 +66,8 @@ const Logo = styled.div`
     font-size: 49px;
 `
 const MenuBackground = styled.div`
-    /* background-color: rgba(0, 0, 0, 0.5); */
 
-    z-index: ${props => (props.menu) ? 1 : -1};
+    display: ${props => (props.menu) ? 'block' : "none"};
 
     position: absolute;
     left: 0;

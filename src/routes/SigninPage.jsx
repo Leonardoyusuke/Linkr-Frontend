@@ -1,93 +1,98 @@
-import axios from "axios"
-import { useContext, useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import styled from "styled-components"
-import { FallingLines } from "react-loader-spinner"
-import { AuthContext } from "../contexts/AuthContext"
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { Bars } from "react-loader-spinner";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function SigninPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const { setInfosUser } = useContext(AuthContext);
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { setInfosUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        if (localStorage.getItem("userToken")) {
-            setInfosUser({ token: localStorage.getItem("userToken"), imgUrl: localStorage.getItem("userImgUrl") });
-            navigate('/timeline')
-        }
-    }, [])
-
-    function handleLogin(e) {
-        e.preventDefault();
-        setLoading(true);
-
-        if (email === "" || password === "")
-            return alert("Please fill in all fields");
-
-
-        const body = {
-            email: email,
-            password: password,
-        };
-
-        const promise = axios.post(process.env.REACT_APP_API_URL + '/signin', body)
-        promise.then(res => {
-            localStorage.setItem("userToken", res.data.token)
-
-            setInfosUser(res.data);
-            if (res.data.userImgUrl) {
-                localStorage.setItem("userImgUrl", res.data.userImgUrl)
-            }
-
-            navigate("/timeline")
-            setLoading(false)
-        })
-        promise.catch(err => {
-            setLoading(false)
-            if (err.response.status === 401) return alert("E-mail or password invalid!")
-        })
+  useEffect(() => {
+    if (localStorage.getItem("userToken")) {
+      setInfosUser({
+        token: localStorage.getItem("userToken"),
+        imgUrl: localStorage.getItem("userImgUrl"),
+        userId: localStorage.getItem("userId"),
+      });
+      navigate("/timeline");
     }
+  }, []);
 
-    return (
-        <Container>
-            <LogoContainer>
-                <h1>linkr</h1>
-                <p>save, share and discover the best links on the web</p>
-            </LogoContainer>
-            <LoginContainer>
-                <form onSubmit={(e) => handleLogin(e)}>
-                    <input
-                        data-test="email"
-                        type="email"
-                        placeholder="e-mail"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}></input>
-                    <input
-                        data-test="password"
-                        type="password"
-                        placeholder="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}></input>
+  function handleLogin(e) {
+    e.preventDefault();
+    setLoading(true);
 
-                    <button type="submit" disabled={loading} data-test="login-btn">
-                        {loading ? (
-                            <FallingLines
-                                color="#ffff"
-                                width="60"
-                                visible={true}
-                                ariaLabel="falling-lines-loading"
-                            />
-                        ) : (
-                            "Log In"
-                        )}
-                    </button>
-                </form >
-                <Link data-test="sign-up-link" to="/sign-up">First time? Create an account!</Link>
-            </LoginContainer >
-        </Container >
-    );
+    if (email === "" || password === "")
+      return alert("Please fill in all fields");
+
+    const body = {
+      email: email,
+      password: password,
+    };
+
+    const promise = axios.post(process.env.REACT_APP_API_URL + "/signin", body);
+    promise.then((res) => {
+      localStorage.setItem("userToken", res.data.token);
+      localStorage.setItem("userId", res.data.userId);
+      setInfosUser(res.data);
+      if (res.data.userImgUrl) {
+        localStorage.setItem("userImgUrl", res.data.userImgUrl);
+      }
+      navigate("/timeline");
+      setLoading(false);
+    });
+    promise.catch((err) => {
+      setLoading(false);
+      if (err.response.status === 401)
+        return alert("E-mail or password invalid!");
+    });
+  }
+
+  return (
+    <Container>
+      <LogoContainer>
+        <h1>linkr</h1>
+        <p>save, share and discover the best links on the web</p>
+      </LogoContainer>
+      <LoginContainer>
+        <form onSubmit={(e) => handleLogin(e)}>
+          <input
+            data-test="email"
+            type="email"
+            placeholder="e-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}></input>
+          <input
+            data-test="password"
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}></input>
+
+          <button type="submit" disabled={loading} data-test="login-btn">
+            {loading ? (
+              <Bars
+                color="#ffff"
+                width="40"
+                visible={true}
+                ariaLabel="falling-lines-loading"
+              />
+            ) : (
+              "Log In"
+            )}
+          </button>
+        </form>
+        <Link data-test="sign-up-link" to="/sign-up">
+          First time? Create an account!
+        </Link>
+      </LoginContainer>
+    </Container>
+  );
 }
 
 const Container = styled.div`
@@ -106,7 +111,6 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
   }
-
 `;
 const LogoContainer = styled.div`
   display: flex;
@@ -129,7 +133,7 @@ const LogoContainer = styled.div`
   > h1 {
     font-size: 106px;
     @media (max-width: 900px) {
-        font-size: 76px;
+      font-size: 76px;
     }
   }
   > p {
@@ -138,10 +142,10 @@ const LogoContainer = styled.div`
     font-family: "Oswald", sans-serif;
 
     @media (max-width: 900px) {
-        font-size: 23px;
-        width: 65%;
+      font-size: 23px;
+      width: 65%;
 
-        text-align: center;
+      text-align: center;
     }
   }
 `;
@@ -167,9 +171,9 @@ const LoginContainer = styled.div`
     width: 80%;
 
     @media (max-width: 900px) {
-        width: 90%;
+      width: 90%;
 
-        margin-top: 30px;
+      margin-top: 30px;
     }
 
     > input {
@@ -187,10 +191,10 @@ const LoginContainer = styled.div`
       border: none;
       border-radius: 6px;
 
-        @media (max-width: 900px) {
-            height: 55px;
-            font-size: 22px;
-        }
+      @media (max-width: 900px) {
+        height: 55px;
+        font-size: 22px;
+      }
     }
 
     > button {
@@ -198,6 +202,10 @@ const LoginContainer = styled.div`
       font-size: 27px;
       font-weight: 700;
       color: #ffff;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       width: 100%;
       height: 65px;
@@ -209,9 +217,9 @@ const LoginContainer = styled.div`
       background-color: #1877f2;
 
       @media (max-width: 900px) {
-            height: 55px;
-            font-size: 22px;
-        }
+        height: 55px;
+        font-size: 22px;
+      }
     }
   }
 
