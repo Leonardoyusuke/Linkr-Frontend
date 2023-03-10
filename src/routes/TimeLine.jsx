@@ -48,7 +48,7 @@ export default function TimeLine() {
           ))}
         </ContainerPosts>
       ) : (
-        <div>There are no posts yet</div>
+        <div data-test="message">There are no posts yet</div>
       )}
     </Container>
   );

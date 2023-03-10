@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 // import urlMetadata from "url-metadata";
 import { useNavigate } from "react-router-dom";
-import  { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Tooltip } from "react-tooltip";
 import { AiOutlineHeart } from "react-icons/ai";
@@ -10,7 +10,7 @@ import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
 import { AuthContext } from "../contexts/AuthContext"
 
-export default function PostUser({ username, pictureUrl, description, url, userId,body,liked }) {
+export default function PostUser({ username, pictureUrl, description, url, userId, body, liked }) {
   const navigate = useNavigate()
   const [clickLike, setClickLike] = useState(!liked);
   const { infosUser } = useContext(AuthContext);
@@ -34,13 +34,15 @@ export default function PostUser({ username, pictureUrl, description, url, userI
       setClickLike((current) => !current);
       setButtonDisabled(false);
     }
-    return;}
+    return;
+  }
 
   return (
-    <ContainerPost>
+    <ContainerPost data-test="post">
       <div>
         <img src={pictureUrl} alt="imagePost" />
         <ContainerLike
+          data-test="like-btn"
           clicked={clickLike}
           onClick={() => {
             like(body.id);
@@ -52,15 +54,15 @@ export default function PostUser({ username, pictureUrl, description, url, userI
           <div data-tip="Tooltip content" data-for="my-button">
             {/* {body.likes} likes */}
           </div>
-          <Tooltip id="my-button" effect="solid">
+          <Tooltip data-test="tooltip" id="my-button" effect="solid">
             This is the tooltip content
           </Tooltip>
         </div>
       </div>
       <div>
-        <h1  >{username}</h1>
-        <h2>{description}</h2>
-        <a href={url} target="_blank" rel="noopener noreferrer">
+        <h1 data-test="username" >{username}</h1>
+        <h2 data-test="description">{description}</h2>
+        <a data-test="link" href={url} target="_blank" rel="noopener noreferrer">
           <section>{url}</section>
         </a>
       </div>

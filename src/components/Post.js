@@ -13,7 +13,7 @@ export default function Post({ body, liked }) {
   const [isHovered, setIsHovered] = useState(false);
   const [textHovered, setTextHovered] = useState(body.likesUsernames);
   const { REACT_APP_API_URL } = process.env;
-   const navigate = useNavigate()
+  const navigate = useNavigate()
   const { infosUser } = useContext(AuthContext);
   console.log(body)
   async function like(postId) {
@@ -42,17 +42,18 @@ export default function Post({ body, liked }) {
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-  async function handleTag(tag){
+  async function handleTag(tag) {
     const normalizedTag = tag.match(/[\wñÑáéíóúÁÉÍÓÚãÃõÕâÂêÊôÔ]+/g)[0];
     const cleanTag = tag.match(/#[\wñÑáéíóúÁÉÍÓÚãÃõÕâÂêÊôÔ]+/g)[0];
     // const updateClicks = await axios.post()
-    navigate(`/hashtag/${normalizedTag}`, {cleanTag: cleanTag})
+    navigate(`/hashtag/${normalizedTag}`, { cleanTag: cleanTag })
   }
   return (
-    <ContainerPost>
+    <ContainerPost data-test="post">
       <div>
         <img src={body.pictureUrl} alt="imagePost" />
         <ContainerLike
+          data-test="like-btn"
           clicked={clickLike}
           onClick={() => {
             like(body.id);
@@ -63,7 +64,7 @@ export default function Post({ body, liked }) {
         <ContainerNumberLikes
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
-          <h4>{body.likes} likes</h4>
+          <h4 data-test="counter">{body.likes} likes</h4>
           {isHovered && <div>{textHovered}</div>}
         </ContainerNumberLikes>
       </div>
@@ -74,12 +75,12 @@ export default function Post({ body, liked }) {
             colors="white"
             tagClicked={(tag) => handleTag(tag)}
           >
-            <h2>{body.description}</h2>
+            <h2 data-test="description">{body.description}</h2>
           </ReactTagify>
         ) : (
-          <h2>{body.description}</h2>
+          <h2 >{body.description}</h2>
         )}
-        <a href={body.url} target="_blank" rel="noopener noreferrer">
+        <a ata-test="link" href={body.url} target="_blank" rel="noopener noreferrer">
           <section>
             <div>
               <h3>{body.urlTitle}</h3>
