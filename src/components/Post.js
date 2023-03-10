@@ -13,9 +13,9 @@ export default function Post({ body, liked }) {
   const [isHovered, setIsHovered] = useState(false);
   const [textHovered, setTextHovered] = useState(body.likesUsernames);
   const { REACT_APP_API_URL } = process.env;
+   const navigate = useNavigate()
   const { infosUser } = useContext(AuthContext);
-  const navigate = useNavigate();
-
+  console.log(body)
   async function like(postId) {
     setButtonDisabled(true);
     setClickLike((current) => !current);
@@ -68,7 +68,7 @@ export default function Post({ body, liked }) {
         </ContainerNumberLikes>
       </div>
       <div>
-        <h1>{body.username}</h1>
+        <h1 onClick={() => navigate(`/user/${body.userId}`)}>{body.username}</h1>
         {body.description ? (
           <ReactTagify
             colors="white"

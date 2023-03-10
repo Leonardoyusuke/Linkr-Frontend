@@ -4,6 +4,7 @@ import AuthProvider from "./contexts/AuthContext";
 import SigninPage from "./routes/SigninPage";
 import SignupPage from "./routes/SignupPage";
 import TimeLine from "./routes/TimeLine";
+import UserTimeLine from "./routes/UserTimeLine.jsx"
 import TagPage from "./routes/TagPage";
 
 export default function App() {
@@ -16,7 +17,7 @@ export default function App() {
             <Route path="/sign-up" element={<SignupPage />} />
             <Route path="/timeline" element={<TimeLine />} />
             <Route path="/hashtag/:tag" element={<TagPage />} />
-            {/* </Routes> <Route path="/user/:id" element={</>}/> */}
+             <Route path="/user/:id" element={<UserTimeLine />} />
           </Routes>
         </BrowserRouter>
       </Container>
