@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineCloudSync, AiOutlineDelete, AiOutlineHeart, AiOutlineSync } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
 import { AuthContext } from "../contexts/AuthContext";
@@ -31,6 +31,38 @@ export default function Post({ body, liked }) {
     } catch (res) {
       console.log(res.response.status);
       setClickLike((current) => !current);
+      setButtonDisabled(false);
+    }
+    return;
+  }
+
+  async function deletePost(postId) {
+    setButtonDisabled(true);
+    try {
+      await axios.delete(`${REACT_APP_API_URL}/posts/${postId}`, {
+        headers: { Authorization: `Bearer ${infosUser.token}` },
+      });
+      setButtonDisabled(false);
+    } catch (res) {
+      console.log(res.response.status);
+      setButtonDisabled(false);
+    }
+    return;
+  }
+
+  async function updatePost(postId) {
+    setButtonDisabled(true);
+    try {
+      await axios.put(
+        `${REACT_APP_API_URL}/posts/${postId}`,
+        { description: "teste" },
+        {
+          headers: { Authorization: `Bearer ${infosUser.token}` },
+        }
+      );
+      setButtonDisabled(false);
+    } catch (res) {
+      console.log(res.response.status);
       setButtonDisabled(false);
     }
     return;
@@ -67,6 +99,8 @@ export default function Post({ body, liked }) {
           <h4 data-test="counter">{body.likes} likes</h4>
           {isHovered && <div>{textHovered}</div>}
         </ContainerNumberLikes>
+        <AiOutlineDelete onClick={() => deletePost(body.id)} />
+        <AiOutlineSync onClick={() => updatePost(body.id)} />
       </div>
       <div>
         <h1 onClick={() => navigate(`/user/${body.userId}`)}>{body.username}</h1>
