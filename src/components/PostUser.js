@@ -5,17 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function PostUser({ username, pictureUrl, description, url, userId }) {
   const navigate = useNavigate()
-  
-
-  // async function getMetadata(url) {
-  //   try {
-  //     const metadata = await urlMetadata(url);
-  //     console.log(metadata);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
 
   return (
     <ContainerPost>

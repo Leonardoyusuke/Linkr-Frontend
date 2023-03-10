@@ -32,7 +32,7 @@ export default function TimeLine() {
       );
       setLoading(true);
     });
-  }, [REACT_APP_API_URL, infosUser, navigate]);
+  }, [REACT_APP_API_URL, infosUser, navigate, formSubmitted]);
   if (!infosUser) {
     return navigate("/");
   }
@@ -54,13 +54,7 @@ export default function TimeLine() {
       {post.length !== 0 ? (
         <ContainerPosts>
           {post.map((p) => (
-            <Post
-              userId={p.userId}
-              username={p.username}
-              pictureUrl={p.pictureUrl}
-              description={p.description}
-              url={p.url}
-            />
+            <Post body={p} />
           ))}
         </ContainerPosts>
       ) : (
