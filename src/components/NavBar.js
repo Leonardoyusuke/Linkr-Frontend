@@ -38,11 +38,11 @@ export default function NavBar(imgUrl) {
                 </div>
                 <UserImg src={localStorage.getItem("userImgUrl")} alt='' />
             </Menu>
-            <MenuBackground menu={menu} onClick={toggleMenu}>
+            {/* <MenuBackground menu={menu} onClick={toggleMenu}> */}
                 <Options onClick={logout} menu={menu}>
                     <p>Logout</p>
                 </Options>
-            </MenuBackground>
+            {/* </MenuBackground> */}
         </Container>
     )
 }
@@ -51,7 +51,8 @@ const Container = styled.div`
     display: flex;
     height: 70px;
     width: 100%;
-    position: relative;
+    position: fixed;
+
 
     align-items: center;
     justify-content: space-between;
@@ -65,19 +66,19 @@ const Logo = styled.div`
     color: #ffff;
     font-size: 49px;
 `
-const MenuBackground = styled.div`
-    /* background-color: rgba(0, 0, 0, 0.5); */
+// const MenuBackground = styled.div`
+//     background-color: rgba(0, 0, 0, 0.5);
 
-    z-index: ${props => (props.menu) ? 1 : -1};
+//     z-index: ${props => (props.menu) ? 1 : -1};
 
-    position: absolute;
-    left: 0;
-    top: 0;
+//     position: absolute;
+//     left: 0;
+//     top: 0;
 
-    width: 100vw;
-    height: 100vh;
+//     width: 100vw;
+//     height: 100vh;
 
-`
+// `
 
 const Menu = styled.div`
     cursor: pointer;
