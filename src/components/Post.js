@@ -1,16 +1,15 @@
-import React, { useState, useContext, } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Post({ body, liked }) {
   const [clickLike, setClickLike] = useState(!liked);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const { REACT_APP_API_URL } = process.env;
-  console.log(body);
   const { infosUser } = useContext(AuthContext);
   async function like(postId) {
     setButtonDisabled(true);
@@ -29,6 +28,7 @@ export default function Post({ body, liked }) {
       setClickLike((current) => !current);
       setButtonDisabled(false);
     }
+
     return;
   }
   return (
@@ -38,11 +38,13 @@ export default function Post({ body, liked }) {
         <ContainerLike
           clicked={clickLike}
           onClick={() => {
-            setClickLike((current) => !current);
+            like(body.id);
           }}
+          disabled={buttonDisabled}
         >
           {clickLike ? <AiOutlineHeart /> : <AiFillHeart />}
         </ContainerLike>
+        <div>{body.likes} likes</div>
       </div>
       <div>
         <h1>{body.username}</h1>
