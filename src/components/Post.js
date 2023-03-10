@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ReactTagify } from "react-tagify";
 // import urlMetadata from "url-metadata";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +24,9 @@ export default function Post({ username, pictureUrl, description, url, userId })
       </div>
       <div>
         <h1  onClick={({username}) => navigate(`/user/${userId}`)} >{username}</h1>
+        <ReactTagify colors="white" tagClicked={(tag)=> console.log(tag)}>
         <h2>{description}</h2>
+        </ReactTagify>
         <a href={url} target="_blank" rel="noopener noreferrer">
           <section>{url}</section>
         </a>
@@ -34,7 +37,7 @@ export default function Post({ username, pictureUrl, description, url, userId })
 
 const ContainerPost = styled.div`
   background-color: #171717;
-  color: #7b7b7b;
+  color: #b7b7b7;
   width: 600px;
   height: fit-content;
   border-radius: 15px;
@@ -55,6 +58,7 @@ const ContainerPost = styled.div`
     margin-left: 10px;
     width: calc(100% - 40px - 10px);
     h1 {
+      color: #ffffff;
       font-size: 20px;
     }
     h2 {
