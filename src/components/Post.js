@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Tooltip } from "react-tooltip";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { ReactTagify } from "react-tagify";
-import { AuthContext } from "../contexts/AuthContext"
-import { useNavigate } from "react-router-dom"; 
+import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Post({ body, liked }) {
   const [clickLike, setClickLike] = useState(!liked);
@@ -34,6 +34,14 @@ export default function Post({ body, liked }) {
     }
     return;
   }
+
+  async function handleTag(tag){
+    const normalizedTag = tag.match(/[\wñÑáéíóúÁÉÍÓÚãÃõÕâÂêÊôÔ]+/g)[0];
+    const cleanTag = tag.match(/#[\wñÑáéíóúÁÉÍÓÚãÃõÕâÂêÊôÔ]+/g)[0];
+    // const updateClicks = await axios.post()
+    navigate(`/hashtag/${normalizedTag}`, {cleanTag: cleanTag})
+  }
+
   return (
     <ContainerPost>
       <div>
@@ -58,7 +66,10 @@ export default function Post({ body, liked }) {
       <div>
         <h1 onClick={() => navigate(`/user/${body.userId}`)}>{body.username}</h1>
         {body.description ? (
-          <ReactTagify colors="white" tagClicked={(tag) => console.log(tag)}>
+          <ReactTagify
+            colors="white"
+            tagClicked={(tag) => handleTag(tag)}
+          >
             <h2>{body.description}</h2>
           </ReactTagify>
         ) : (
@@ -84,7 +95,7 @@ export default function Post({ body, liked }) {
 const ContainerPost = styled.div`
   background-color: #171717;
   color: #b7b7b7;
-  width: 600px;
+  width: 100%;
   height: fit-content;
   border-radius: 15px;
   border: none;
